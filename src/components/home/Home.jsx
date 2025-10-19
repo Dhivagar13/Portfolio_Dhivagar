@@ -1,5 +1,6 @@
 import React from 'react';
 import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import MyPhoto from '../../assets/Squared_1.jpg';
 
 const Home = () => {
   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.2 });
@@ -18,7 +19,7 @@ const Home = () => {
             <a href="#projects" className={`cta-button ${isVisible ? 'animate-in' : ''}`} style={{ animationDelay: '0.36s' }}>View My Work</a>
           </div>
           <div className="home-image-frame photo-gap">
-            <img src="../../assets/Squared_1.jpg" alt="My Picture" />
+            <img src={MyPhoto} alt="My Picture" />
           </div>
         </div>
       </div>
