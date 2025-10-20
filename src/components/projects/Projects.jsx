@@ -9,7 +9,10 @@ const Projects = () => {
       <div className="container">
         <h2 className={`section-title ${isVisible ? 'animate-in' : ''}`}>Projects</h2>
         <div className="projects-grid">
-          <div className="project-card">
+          <div 
+              className={`project-card ${isVisible ? 'animate-in' : ''}`}
+              style={{ animationDelay: `0.1s` }}
+          >
             <h3>Smart Mentis</h3>
             <p className="project-domain">Smart Education</p>
             <p>An AI-driven career guidance system for assessing aptitude, interests, and skills to provide personalized career recommendations.</p>

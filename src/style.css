@@ -277,7 +277,7 @@ section {
     padding: 1.5rem;
     border-radius: 10px;
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.3s ease;
     color: var(--secondary-text-color);
     font-size: 1.2rem;
     display: flex;
@@ -290,6 +290,7 @@ section {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(100, 149, 237, 0.3);
     color: var(--accent-color-light-blue);
+    border-left: 4px solid var(--accent-color-light-blue);
 }
 
 .skill-item svg {
@@ -308,7 +309,19 @@ section {
     padding: 2rem;
     border-radius: 10px;
     text-align: left;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(100, 149, 237, 0.3);
+    border-left: 4px solid var(--accent-color-light-blue);
+}
+
+.project-card.animate-in {
+    animation: fadeInUp 0.6s ease-out forwards;
 }
 
 
@@ -348,6 +361,12 @@ section {
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.3s ease;
     opacity: 0;
     transform: translateY(30px);
+}
+
+.credential-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(100, 149, 237, 0.3);
+    border-left: 4px solid var(--accent-color-light-blue);
 }
 
 .credential-item h3 {
