@@ -1,0 +1,125 @@
+.projects-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 100px 20px;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.projects-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.section-title {
+  font-size: clamp(26px, 5vw, 32px);
+  color: var(--light-slate);
+  font-family: var(--font-mono);
+  margin-bottom: 40px;
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.projects-section.visible .section-title {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+.project-domain {
+  color: var(--slate);
+  font-size: 0.95rem;
+  margin-top: 1px;
+  color: #1f3151;
+  background-color: var(--light-slate);
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  font-family: var(--font-mono);
+  
+}
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 35px;
+  margin-top: 50px;
+}
+
+.project-card {
+  background-color: var(--card-bg-color);
+  padding: 5px;
+  border-radius: 10px;
+  text-align: left;
+  /* box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7); */
+  transition: tranform 0.3s ease, box-shadow 0.3s ease,border-left 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+}
+.project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(100, 149, 237, 0.3);
+    border-left: 4px solid var(--accent-color-light-blue);
+}
+
+.project-card.animate-in {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
+
+
+.project-card h3 {
+    font-size: 2rem;
+    color: var(--primary-text-color);
+}
+.projects-section.visible .project-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem 1.75rem;
+  height: 100%;
+}
+
+.project-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.folder-icon,
+.external-link {
+  color: var(--secondary-color);
+  font-family: var(--font-mono);
+}
+
+.project-title {
+  margin: 0 0 10px;
+  color: var(--light-slate);
+  font-size: 1.4rem;
+}
+
+.project-description {
+  color: var(--slate);
+  font-size: 0.95rem;
+}
+
+.project-tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--slate);
+}
+
+.project-tech-list li {
+  margin-right: 15px;
+  line-height: 1.75;
+}
