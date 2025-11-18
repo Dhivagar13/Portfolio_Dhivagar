@@ -33,6 +33,7 @@ export default Home;
 import React, { useEffect, useState } from 'react';
 import './Home.css';
 import { FaDownload } from "react-icons/fa";
+import profileImage from '../../assets/Squared_1.jpg';
 
 const Home = () => {
   const [visible, setVisible] = useState(false);
@@ -83,7 +84,7 @@ const Home = () => {
         <div className="about-image">
           <div className="image-wrapper">
             <div className="image-placeholder">
-              <img src="/src/assets/Squared_1.jpg" alt="Profile" className="profile-image" />
+              <img src={profileImage} alt="Profile" className="profile-image" />
             </div>
           </div>
         </div>
