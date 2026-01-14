@@ -39,16 +39,17 @@
   background-color: var(--card-bg-color);
   padding: 1.5rem;
   border-radius: 4px;
-  transition: tranform 0.3s ease, box-shadow 0.3s ease,border-left 0.3s ease;
+  transition: tranform 0.3s ease, box-shadow 0.3s ease, border-left 0.3s ease;
   /* transition: opacity 0.8s ease-out; */
   box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
   opacity: 0;
   transform: translateY(30px);
 }
+
 .credential-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(100, 149, 237, 0.3);
-    border-left: 4px solid var(--accent-color-light-blue);  
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(100, 149, 237, 0.3);
+  border-left: 4px solid var(--accent-color-light-blue);
 }
 
 .credentials-section.visible .credential-card {

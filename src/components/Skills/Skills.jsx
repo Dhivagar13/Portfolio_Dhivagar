@@ -43,8 +43,8 @@ export default Skills;
 import React, { useEffect, useRef, useState } from 'react';
 import './Skills.css';
 import { DiJava, DiReact, DiMongodb } from 'react-icons/di';
-import { FaBolt, FaLightbulb, FaGithub  } from 'react-icons/fa';
-import { SiSpringboot, SiPostman, SiMetabase,SiDocker,SiPostgresql} from 'react-icons/si';
+import { FaBolt, FaLightbulb, FaGithub } from 'react-icons/fa';
+import { SiSpringboot, SiPostman, SiMetabase, SiDocker, SiPostgresql } from 'react-icons/si';
 import { MdOutlineRecordVoiceOver } from "react-icons/md";
 
 const Skills = () => {
@@ -76,51 +76,30 @@ const Skills = () => {
       className={`skills-section ${isVisible ? 'visible' : ''}`}
     >
       <h2 className="section-title">My Skills</h2>
-      <p>In Technical and Industry point of view what I have learned,</p>
-
-      <ul className="skills-list">
-        <li><span className="icon"><DiJava /></span> Java</li>
-        <li><span className="icon"><DiReact /></span> React JS</li>
-        <li><span className="icon"><SiSpringboot /></span> Spring Boot</li>
-        <li><span className="icon"><FaGithub /></span> Git & GitHub</li>
-        <li><span className="icon"><SiPostman /></span> Postman</li>
-        <li><span className="icon"><DiMongodb /></span> MongoDB</li>
-        <li><span className="icon"><SiPostgresql /></span> PostgreSQL</li>
-        <li><span className="icon"><SiMetabase /></span> Metabase</li>
-        <li><span className="icon"><SiDocker /></span> Docker</li>
-        <li><span className="icon"><FaLightbulb /></span> Problem Solving</li>
-        <li><span className="icon"><FaBolt /></span> Fast Learner</li>
-        <li><span className="icon"><MdOutlineRecordVoiceOver  /></span> Good in communication</li>
-      </ul>
-      {/* <div className="skills-grid">
-          {[
-            { icon: <DiJava />, name: "Java" },
-            { icon: <DiReact />, name: "React JS"},
-            // { icon: <FaReact />, name: "React" },
-            { icon: <SiSpringboot />, name: "Spring Boot" },
-            { icon: <SiFastapi />, name: "FastAPI" },
-            { icon: <SiMysql />, name: "MySQL" },
-            { icon: <DiMongodb />, name: "MongoDB" },
-            { icon: <SiPostgresql />, name: "PostgreSQL" },
-            { icon: <SiFirebase />, name: "Firebase" },
-            { icon: <><FaGitAlt /> Git & <FaGithub /> GitHub</> },
-            { icon: <FaDocker />, name: "Docker" },
-            { icon : <SiPostman />, name: "Postman" },
-            { icon : <SiMetabase />, name: "Metabase" },
-            { icon: <FaChartBar />, name: "PowerBI" },
-            { icon: <FaLightbulb />, name: "Problem Solving" },
-            { icon: <FaBolt />, name: "Fast Learner" },
-            { icon: <MdOutlineRecordVoiceOver  />, name: "Good in communication" }
-          ].map((skill, index) => (
-            <div 
-              key={skill.name || index}
-              className={`skill-item ${isVisible ? 'animate-in' : ''}`}
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              {skill.icon} {skill.name}
-            </div> }
-          {))} }
-        {</div> */}
+      <div className="skills-grid">
+        {[
+          { icon: <DiJava />, name: "Java" },
+          { icon: <DiReact />, name: "React JS" },
+          { icon: <SiSpringboot />, name: "Spring Boot" },
+          { icon: <FaGithub />, name: "Git & GitHub" },
+          { icon: <SiPostman />, name: "Postman" },
+          { icon: <DiMongodb />, name: "MongoDB" },
+          { icon: <SiPostgresql />, name: "PostgreSQL" },
+          // { icon: <SiMetabase />, name: "Metabase" },
+          { icon: <SiDocker />, name: "Docker" },
+          // { icon: <FaLightbulb />, name: "Problem Solving" },
+          { icon: <FaBolt />, name: "Fast Learner" },
+          { icon: <MdOutlineRecordVoiceOver />, name: "Good in communication" }
+        ].map((skill, index) => (
+          <div
+            key={skill.name || index}
+            className={`skill-item ${isVisible ? 'animate-in' : ''}`}
+            style={{ animationDelay: `${index * 0.1}s` }}
+          >
+            {skill.icon} {skill.name}
+          </div>
+        ))}
+      </div>
     </section>
   );
 };
