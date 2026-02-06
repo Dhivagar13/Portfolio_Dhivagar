@@ -11,9 +11,12 @@ import Credentials from "./components/Achievements/Achievements";
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 
+import VantaBackground from './components/VantaBackground/VantaBackground';
+
 function App() {
   return (
     <div className="App">
+      <VantaBackground />
       <Header />
       <main>
         <Home />

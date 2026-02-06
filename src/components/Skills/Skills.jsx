@@ -85,7 +85,7 @@ const Skills = () => {
           { icon: <SiPostman />, name: "Postman" },
           { icon: <DiMongodb />, name: "MongoDB" },
           { icon: <SiPostgresql />, name: "PostgreSQL" },
-          // { icon: <SiMetabase />, name: "Metabase" },
+          { icon: <SiMetabase />, name: "Metabase" },
           { icon: <SiDocker />, name: "Docker" },
           // { icon: <FaLightbulb />, name: "Problem Solving" },
           { icon: <FaBolt />, name: "Fast Learner" },
