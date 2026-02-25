@@ -108,28 +108,36 @@ const CyberneticGridShader = () => {
         const mesh = new THREE.Mesh(geometry, material);
         scene.add(mesh);
 
-        // 4) Resize handler
+        // 4) Resize handler — use actual framebuffer size (CSS × dpr)
         const onResize = () => {
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            renderer.setSize(width, height);
-            uniforms.iResolution.value.set(width, height);
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            renderer.setSize(w, h);
+            // iResolution must match gl_FragCoord space = CSS * dpr
+            const dpr = renderer.getPixelRatio();
+            uniforms.iResolution.value.set(w * dpr, h * dpr);
         };
         window.addEventListener('resize', onResize);
         onResize();
 
-        // 5) Mouse handler
+        // 5) Mouse tracking — scale by dpr to match framebuffer coordinates
+        const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
         const onMouseMove = (e) => {
-            uniforms.iMouse.value.set(
-                e.clientX,
-                container.clientHeight - e.clientY
-            );
+            const dpr = renderer.getPixelRatio();
+            mouse.x = e.clientX * dpr;
+            mouse.y = (window.innerHeight - e.clientY) * dpr;
         };
         window.addEventListener('mousemove', onMouseMove);
 
-        // 6) Animation loop
+        // 6) Animation loop with smooth lerp
+        const smoothMouse = { x: mouse.x, y: mouse.y };
+        const LERP = 0.12;
+
         renderer.setAnimationLoop(() => {
             uniforms.iTime.value = clock.getElapsedTime();
+            smoothMouse.x += (mouse.x - smoothMouse.x) * LERP;
+            smoothMouse.y += (mouse.y - smoothMouse.y) * LERP;
+            uniforms.iMouse.value.set(smoothMouse.x, smoothMouse.y);
             renderer.render(scene, camera);
         });
 
