@@ -1,14 +1,23 @@
 :root {
-    --primary-color: #0a192f; /* Dark Blue */
-    --secondary-color: #4682B4; /* Steel Blue */
-    --light-slate: #ccd6f6; /* Light Slate GrayBright Teal */
-    --primary-text-color: #74a5e4; /* Light Blueish White */
-    --slate: #8892b0; /* Slate Gray */
-    --dark-slate:#495670; /* Dark Slate Gray */
-    --accent-color-light-blue: #87CEFA; /* Light Sky Blue */
-    --accent-color-violet: #4682B4; /* Steel Blue */
-    --card-bg-color: #112240; /* Navy Blue */
-    --font-sans: 'Calibre', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
+  --primary-color: #0a192f;
+  /* Dark Blue */
+  --secondary-color: #4682B4;
+  /* Steel Blue */
+  --light-slate: #ccd6f6;
+  /* Light Slate GrayBright Teal */
+  --primary-text-color: #74a5e4;
+  /* Light Blueish White */
+  --slate: #8892b0;
+  /* Slate Gray */
+  --dark-slate: #495670;
+  /* Dark Slate Gray */
+  --accent-color-light-blue: #87CEFA;
+  /* Light Sky Blue */
+  --accent-color-violet: #4682B4;
+  /* Steel Blue */
+  --card-bg-color: #112240;
+  /* Navy Blue */
+  --font-sans: 'Calibre', 'San Francisco', 'SF Pro Text', -apple-system, system-ui, sans-serif;
   --font-mono: 'SF Mono', 'Fira Code', 'Fira Mono', 'Roboto Mono', monospace;
 }
 
@@ -17,7 +26,7 @@ html {
 }
 
 body {
-  background-color: var(--primary-color);
+  /* background-color: var(--primary-color); */
   color: var(--slate);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
@@ -68,4 +77,54 @@ h2 {
   main {
     padding: 0 25px;
   }
+}
+
+/* =============================================
+   Cybernetic Grid Shader — Overlay Styles
+   ============================================= */
+
+.app-container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+.overlay-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.overlay-content .title {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 800;
+  font-family: 'Space Grotesk', sans-serif;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  background: linear-gradient(135deg,
+      #00f0ff 0%,
+      #00ff99 40%,
+      #00cfff 80%,
+      #00ff77 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  filter: drop-shadow(0 0 24px rgba(0, 240, 255, 0.55));
+  margin-bottom: 1rem;
+}
+
+.overlay-content .description {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(0, 240, 200, 0.75);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(0, 255, 150, 0.4);
 }

@@ -1,22 +1,3 @@
-// import React from 'react';
-// import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-
-// const Contact = () => {
-//   const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 });
-
-//   return (
-//     <section id="contact" className="contact-section" ref={ref}>
-//       <div className="container">
-//         <h3 className={`section-subtitle ${isVisible ? 'animate-in' : ''}`}>What's Next?</h3>
-//         <h2 className={`section-title ${isVisible ? 'animate-in' : ''}`}>Get In Touch</h2>
-//         <p className={`${isVisible ? 'animate-in' : ''}`} style={{ animationDelay: '0.12s' }}>I'm currently looking for new opportunities, and my inbox is always open. Whether you have a question or just want to say hi, I'll do my best to get back to you!</p>
-//         <a href="mailto:dhivagar0506@gmail.com" className={`cta-button ${isVisible ? 'animate-in' : ''}`} style={{ animationDelay: '0.22s' }}>Say Hello</a>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default Contact;
 import React, { useEffect, useRef, useState } from 'react';
 import './Contact.css';
 
@@ -29,10 +10,10 @@ const Contact = () => {
       (entries) => {
         if (entries[0].isIntersecting) {
           setVisible(true);
-          observer.disconnect(); // trigger once
+          observer.disconnect();
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -46,17 +27,40 @@ const Contact = () => {
       className={`contact-section ${visible ? 'visible' : ''}`}
     >
       <h2 className="section-title">What's Next?</h2>
-      <h3 className="contact-subtitle">Get In Touch</h3>
-      <p>
-        I'm currently looking for new opportunities, and my inbox is always open. 
-        Whether you have a question or just want to say hi, I'll do my best to get back to you!
-      </p>
-      <a 
-        href="mailto:dhivagar0506@gmail.com" 
-        className="cta-button"
-      >
-        Say Hello
-      </a>
+
+      <div className="contact-card">
+        {/* Neon accent top bar */}
+        <div className="contact-card-bar" />
+
+        <h3 className="contact-subtitle">Get In Touch</h3>
+        <p className="contact-desc">
+          I'm currently looking for new opportunities, and my inbox is always open.
+          Whether you have a question or just want to say hi, I'll do my best to get back to you!
+        </p>
+
+        {/* Social / contact links row */}
+        <div className="contact-links">
+          <a href="mailto:dhivagar0506@gmail.com" className="contact-link-pill" title="Email">
+            <span className="contact-link-icon">✉</span>
+            <span>dhivagar0506@gmail.com</span>
+          </a>
+          <a href="https://github.com/Dhivagar13" target="_blank" rel="noreferrer" className="contact-link-pill" title="GitHub">
+            <span className="contact-link-icon">⌥</span>
+            <span>GitHub</span>
+          </a>
+          <a href="https://linkedin.com/in/dhivagar-b" target="_blank" rel="noreferrer" className="contact-link-pill" title="LinkedIn">
+            <span className="contact-link-icon">in</span>
+            <span>LinkedIn</span>
+          </a>
+        </div>
+
+        <a
+          href="mailto:dhivagar0506@gmail.com"
+          className="cta-button"
+        >
+          Say Hello 👋
+        </a>
+      </div>
     </section>
   );
 };

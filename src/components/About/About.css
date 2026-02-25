@@ -1,22 +1,21 @@
 .about-section {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 100px 20px;
+  padding: 100px 40px;
 }
 
 /* ---------- Section Title ---------- */
 .section-title {
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
-  font-size: clamp(26px, 5vw, 32px);
+  margin-bottom: 52px;
+  font-size: clamp(32px, 5vw, 48px);
   color: var(--light-slate);
   font-family: var(--font-mono);
   white-space: nowrap;
   opacity: 0;
   transform: translateY(-20px);
   animation: slideDown 0.7s ease-out forwards;
-  /* animate on load */
   animation-delay: 0.2s;
 }
 
@@ -40,22 +39,21 @@
 
 /* ---------- About Content ---------- */
 .about-text {
-  /* Glassmorphism */
   background: rgba(10, 25, 47, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  padding: 30px;
-  border-radius: 15px;
+  padding: 64px 72px;
+  border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .about-text p {
-  margin: 0 0 15px;
-  line-height: 1.5;
+  margin: 0 0 24px;
+  line-height: 2;
   opacity: 0;
   transform: translateX(-20px);
-  font-size: 20px;
+  font-size: 1.3rem;
   animation: slideLeft 0.7s ease-out forwards;
 }
 
@@ -86,12 +84,12 @@
 .skills-list-about li {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
   position: relative;
-  margin-bottom: 30px;
-  padding-left: 20px;
+  margin-bottom: 40px;
+  padding-left: 28px;
   font-family: var(--font-mono);
-  font-size: 20px;
+  font-size: 1.35rem;
   opacity: 0;
   transform: scale(0.8);
   animation: popIn 0.5s ease-out forwards;

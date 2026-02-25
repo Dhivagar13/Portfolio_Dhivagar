@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 // Import Components
@@ -11,12 +11,16 @@ import Credentials from "./components/Achievements/Achievements";
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
 
-import VantaBackground from './components/VantaBackground/VantaBackground';
+import StellarBackground from './components/StellarBackground/StellarBackground';
+import KineticDotsLoader from './components/Loader/KineticDotsLoader';
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   return (
     <div className="App">
-      <VantaBackground />
+      {loading && <KineticDotsLoader onFinish={() => setLoading(false)} />}
+      <StellarBackground />
       <Header />
       <main>
         <Home />

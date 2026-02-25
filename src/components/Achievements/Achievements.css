@@ -1,5 +1,5 @@
 .credentials-section {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: 0 auto;
   padding: 100px 20px;
   opacity: 0;
@@ -30,17 +30,16 @@
 
 .credentials-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+  gap: 40px;
   margin-top: 40px;
 }
 
 .credential-card {
   background-color: var(--card-bg-color);
-  padding: 1.5rem;
-  border-radius: 4px;
+  padding: 3rem;
+  border-radius: 14px;
   transition: tranform 0.3s ease, box-shadow 0.3s ease, border-left 0.3s ease;
-  /* transition: opacity 0.8s ease-out; */
   box-shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
   opacity: 0;
   transform: translateY(30px);
@@ -65,13 +64,13 @@
 }
 
 .credential-title {
-  font-size: 1.2rem;
+  font-size: 1.6rem;
   color: var(--light-slate);
-  margin: 0 0 10px;
+  margin: 0 0 14px;
 }
 
 .credential-source {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: var(--slate);
   margin: 0;
 }

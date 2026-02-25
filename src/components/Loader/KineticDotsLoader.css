@@ -1,0 +1,166 @@
+.kdl-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 50% 60%, #041a2e 0%, #051525 45%, #09090b 100%);
+    transition: opacity 0.6s ease, visibility 0.6s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.kdl-overlay.kdl-hiding {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Center wrapper */
+.kdl-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 52px;
+}
+
+/* Brand */
+.kdl-brand {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    background: linear-gradient(135deg, #00f0ff 0%, #00ff99 60%, #00cfff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 0 28px rgba(0, 240, 255, 0.65));
+    animation: kdl-brand-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes kdl-brand-pulse {
+
+    0%,
+    100% {
+        filter: drop-shadow(0 0 28px rgba(0, 240, 255, 0.65));
+    }
+
+    50% {
+        filter: drop-shadow(0 0 48px rgba(0, 255, 160, 0.85));
+    }
+}
+
+/* ── Kinetic dots ── */
+.kdl-dots {
+    display: flex;
+    align-items: flex-end;
+    gap: 20px;
+    height: 80px;
+}
+
+.kdl-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    position: relative;
+    background: #00f0ff;
+    box-shadow: 0 0 18px rgba(0, 240, 255, 1.0), 0 0 40px rgba(0, 240, 255, 0.55);
+    animation: kdl-bounce 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+    display: inline-block;
+}
+
+/* Alternate dot colours */
+.kdl-dot:nth-child(2) {
+    background: #00e5b0;
+    box-shadow: 0 0 18px rgba(0, 229, 176, 1.0), 0 0 40px rgba(0, 229, 176, 0.55);
+}
+
+.kdl-dot:nth-child(3) {
+    background: #00ff99;
+    box-shadow: 0 0 18px rgba(0, 255, 153, 1.0), 0 0 40px rgba(0, 255, 153, 0.55);
+}
+
+.kdl-dot:nth-child(4) {
+    background: #00e5b0;
+    box-shadow: 0 0 18px rgba(0, 229, 176, 1.0), 0 0 40px rgba(0, 229, 176, 0.55);
+}
+
+.kdl-dot:nth-child(5) {
+    background: #00f0ff;
+    box-shadow: 0 0 18px rgba(0, 240, 255, 1.0), 0 0 40px rgba(0, 240, 255, 0.55);
+}
+
+@keyframes kdl-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0) scaleX(1) scaleY(1);
+    }
+
+    30% {
+        transform: translateY(-44px) scaleX(0.88) scaleY(1.18);
+    }
+
+    50% {
+        transform: translateY(-58px) scaleX(0.84) scaleY(1.22);
+    }
+
+    70% {
+        transform: translateY(-16px) scaleX(1.06) scaleY(0.94);
+    }
+
+    85% {
+        transform: translateY(-4px) scaleX(1.02) scaleY(0.99);
+    }
+}
+
+/* Squash shadow under each dot */
+.kdl-dot::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 5px;
+    border-radius: 50%;
+    background: rgba(0, 240, 255, 0.35);
+    filter: blur(3px);
+    animation: kdl-shadow 0.9s cubic-bezier(0.36, 0.07, 0.19, 0.97) infinite;
+}
+
+@keyframes kdl-shadow {
+
+    0%,
+    100% {
+        transform: translateX(-50%) scaleX(1);
+        opacity: 0.45;
+    }
+
+    50% {
+        transform: translateX(-50%) scaleX(0.3);
+        opacity: 0.08;
+    }
+}
+
+/* Label */
+.kdl-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.05rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(0, 240, 255, 0.5);
+    animation: kdl-fade-label 1.4s ease-in-out infinite;
+}
+
+@keyframes kdl-fade-label {
+
+    0%,
+    100% {
+        opacity: 0.45;
+    }
+
+    50% {
+        opacity: 1.0;
+    }
+}

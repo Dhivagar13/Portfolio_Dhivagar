@@ -80,36 +80,42 @@ const Home = () => {
   return (
     <section id="home" className={`home-section ${visible ? 'visible' : ''}`}>
       <div className="home-content pop-up">
-        {/* Left side - Image */}
-        <div className="about-image">
-          <div className="image-wrapper">
-            <div className="image-placeholder">
-              <img src={profileImage} alt="Profile" className="profile-image" />
+
+        {/* Single glassmorphic hero card wrapping image + text */}
+        <div className="hero-glass">
+
+          {/* Left side - Image */}
+          <div className="about-image">
+            <div className="image-wrapper">
+              <div className="image-placeholder">
+                <img src={profileImage} alt="Profile" className="profile-image" />
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Right side - Text */}
-        <div className="text-content">
-          <h1 className="greeting">Hi, I'm</h1>
-          <h2 className="name">Dhivagar B</h2>
-          <h3 className="subtitle">
-            {text}
-            <span className="cursor">|</span>
-          </h3>
-          <p className="intro-text">
-            Building interactive web apps with modern technologies. Focused on Problem Solving,
-            Clean Code, Smart Design, and seamless user experience.
-          </p>
-          <div className="button-container">
-            <a className="scroll-button" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
-              <span>Get In Touch</span>
-            </a>
-            <a href="https://drive.google.com/uc?export=download&id=1Y7DUKj1Va2nSTfeLGxj3sdF5fC89fGD0" download="Dhivagar_B_CV.pdf" className="download-btn" target="_blank" rel="noopener noreferrer">
-              Download CV <FaDownload />
-            </a>
+          {/* Right side - Text */}
+          <div className="text-content">
+            <h1 className="greeting">Hi, I'm</h1>
+            <h2 className="name">Dhivagar B</h2>
+            <h3 className="subtitle">
+              {text}
+              <span className="cursor">|</span>
+            </h3>
+            <p className="intro-text">
+              Building interactive web apps with modern technologies. Focused on Problem Solving,
+              Clean Code, Smart Design, and seamless user experience.
+            </p>
+            <div className="button-container">
+              <a className="scroll-button" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>
+                <span>Get In Touch</span>
+              </a>
+              <a href="https://drive.google.com/uc?export=download&id=1Y7DUKj1Va2nSTfeLGxj3sdF5fC89fGD0" download="Dhivagar_B_CV.pdf" className="download-btn" target="_blank" rel="noopener noreferrer">
+                Download CV <FaDownload />
+              </a>
+            </div>
           </div>
-        </div>
+
+        </div>{/* end hero-glass */}
       </div>
     </section>
   );
