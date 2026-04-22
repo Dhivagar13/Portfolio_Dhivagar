@@ -1,65 +1,75 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import './Contact.css';
+import useScrollReveal from '../../hooks/useScrollReveal';
+import HudFrame from './HudFrame';
 
 const Contact = () => {
-  const sectionRef = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const revealRef = useScrollReveal({ threshold: 0.15 });
+  const [result, setResult] = useState("");
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.2 }
-    );
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setResult("INITIALIZING TRANSMISSION...");
+    const formData = new FormData(event.target);
+    formData.append("access_key", "32f751e5-1f04-4a07-9ba2-b944bad270fe");
 
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setResult("SUCCESS // TRANSMISSION COMPLETE.");
+        event.target.reset();
+      } else {
+        setResult("ERROR // TRANSMISSION FAILED.");
+      }
+    } catch (error) {
+      setResult("ERROR // CONNECTION LOST.");
+    }
+  };
 
   return (
     <section
       id="contact"
-      ref={sectionRef}
-      className={`contact-section ${visible ? 'visible' : ''}`}
+      ref={revealRef}
+      className="contact-section reveal-hidden"
     >
-      <h2 className="section-title">What's Next?</h2>
-
-      <div className="contact-card">
-        {/* Neon accent top bar */}
-        <div className="contact-card-bar" />
-
-        <h3 className="contact-subtitle">Get In Touch</h3>
-        <p className="contact-desc">
-          I'm currently looking for new opportunities, and my inbox is always open.
-          Whether you have a question or just want to say hi, I'll do my best to get back to you!
-        </p>
-
-        {/* Social / contact links row */}
-        <div className="contact-links">
-          <a href="mailto:dhivagar0506@gmail.com" className="contact-link-pill" title="Email">
-            <span className="contact-link-icon">✉</span>
-            <span>dhivagar0506@gmail.com</span>
-          </a>
-          <a href="https://github.com/Dhivagar13" target="_blank" rel="noreferrer" className="contact-link-pill" title="GitHub">
-            <span className="contact-link-icon">⌥</span>
-            <span>GitHub</span>
-          </a>
-          <a href="https://linkedin.com/in/dhivagar-b" target="_blank" rel="noreferrer" className="contact-link-pill" title="LinkedIn">
-            <span className="contact-link-icon">in</span>
-            <span>LinkedIn</span>
-          </a>
-        </div>
-
-        <a
-          href="mailto:dhivagar0506@gmail.com"
-          className="cta-button"
-        >
-          Say Hello 👋
-        </a>
+      <div className="cyber-panel" style={{ background: 'transparent', border: 'none', padding: 0, boxShadow: 'none' }}>
+        <HudFrame seed={898766}>
+          <form className="contact-form" onSubmit={onSubmit}>
+            <div className="form-row">
+              <div className="form-group">
+                <label>NAME</label>
+                <input type="text" name="name" placeholder="Your Name" required />
+              </div>
+              <div className="form-group">
+                <label>EMAIL</label>
+                <input type="email" name="email" placeholder="your@email.com" required />
+              </div>
+            </div>
+            <div className="form-group">
+              <label>MESSAGE</label>
+              <textarea name="message" rows="6" placeholder="Tell me about your project..." required></textarea>
+            </div>
+            <div className="form-submit">
+              <button type="submit" className="cyber-button">SEND MESSAGE</button>
+            </div>
+            {result && (
+              <p className="cyber-result" style={{ 
+                marginTop: '20px', 
+                textAlign: 'center', 
+                color: result.includes('SUCCESS') ? '#00f0ff' : result.includes('TRANSMISSION...') ? '#fff' : '#ff3366', 
+                fontFamily: 'monospace',
+                letterSpacing: '1px'
+              }}>
+                {result}
+              </p>
+            )}
+          </form>
+        </HudFrame>
       </div>
     </section>
   );

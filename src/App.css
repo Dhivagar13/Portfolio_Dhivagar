@@ -52,8 +52,10 @@ section {
 
 h2 {
   color: var(--light-slate);
-  font-family: var(--font-mono);
-  font-size: clamp(26px, 5vw, 32px);
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  letter-spacing: 1px;
   margin-bottom: 20px;
   position: relative;
   width: 100%;
@@ -127,4 +129,48 @@ h2 {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   text-shadow: 0 0 12px rgba(0, 255, 150, 0.4);
+}
+
+/* =============================================
+   Global Scroll-Reveal / Pop-Up Animation
+   ============================================= */
+
+@keyframes popUp {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.94);
+    filter: blur(4px);
+  }
+
+  60% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.01);
+    filter: blur(0);
+  }
+
+  80% {
+    transform: translateY(4px) scale(0.99);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Hidden state — set before element enters viewport */
+.reveal-hidden {
+  opacity: 0;
+  transform: translateY(60px) scale(0.94);
+  filter: blur(4px);
+  transition:
+    opacity 0.1s ease,
+    transform 0.1s ease,
+    filter 0.1s ease;
+}
+
+/* Visible state — triggers the pop-up animation */
+.reveal-visible {
+  animation: popUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
 }

@@ -1,0 +1,94 @@
+#webgl_canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+#hud {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  text-align: right;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  color: #c8ff47;
+  text-transform: uppercase;
+  font-family: 'JetBrains Mono', monospace;
+  pointer-events: none;
+}
+
+#hud .progress-bar {
+  width: 7.5rem;
+  height: 2px;
+  background: rgba(255,255,255,0.2);
+  margin-block-start: 0.5rem;
+  margin-inline-start: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+#hud .progress-fill {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  background: #c8ff47;
+  transition: width 0.1s linear;
+}
+
+#hud .scene-label {
+  font-size: 0.6rem;
+  color: #c8ff47;
+  margin-block-start: 0.4rem;
+}
+
+#scene_strip {
+  position: fixed;
+  left: 2.125rem;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.scene-dot {
+  width: 0.25rem;
+  height: 0.25rem;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  transition: background 0.3s, transform 0.3s;
+}
+
+.scene-dot.active {
+  background: #c8ff47;
+  transform: scale(1.8);
+}
+
+#theme_toggle {
+  position: fixed;
+  bottom: 2rem;
+  left: 2.125rem;
+  transform: translate(-50%, 0);
+  z-index: 1000;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c8ff47;
+  transition: background 0.3s;
+}
+
+#theme_toggle:hover {
+  background: rgba(255,255,255,0.2);
+}

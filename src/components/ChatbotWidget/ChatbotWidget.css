@@ -1,0 +1,316 @@
+.cb-fixed-wrapper {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  /* Fixed size to hold the layout morph smoothly */
+  width: 64px;
+  height: 64px;
+}
+
+.cb-morph-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  /* Enhanced Liquid Glassmorphism */
+  background: rgba(18, 20, 24, 0.55);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* LAUNCHER (Closed State) */
+.cb-launcher {
+  width: 64px;
+  height: 64px;
+  border: none;
+  background: transparent; 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  padding: 8px; /* Leaves 48x48 for the inner button */
+}
+
+.cb-launcher-inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 14px;
+  background: #00e676; /* Bright green from screenshot */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 -2px 6px rgba(0,0,0,0.15), 0 4px 12px rgba(0, 230, 118, 0.3);
+}
+
+.cb-launcher-icon {
+  color: #111111;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-weight: 500;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+/* PANEL (Expanded State) */
+.cb-panel {
+  width: 350px;
+  max-width: calc(100vw - 3rem);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 200px;
+}
+
+.cb-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 16px 16px 0;
+}
+
+.cb-tabs-container {
+  background: rgba(0, 0, 0, 0.4);
+  padding: 4px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cb-tabs {
+  display: flex;
+  gap: 2px;
+}
+
+.cb-tab {
+  position: relative;
+  background: transparent;
+  border: none;
+  padding: 6px 16px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.85rem;
+  font-family: 'SF Pro Text', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  z-index: 1;
+  transition: color 0.2s;
+}
+
+.cb-tab:hover {
+  color: #ffffff;
+}
+
+.cb-tab-active {
+  color: #ffffff;
+}
+
+.cb-tab-bubble {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.15); /* Active pill color */
+  border-radius: 8px;
+  z-index: -1;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+}
+
+.cb-tab-label {
+  position: relative;
+  z-index: 2;
+}
+
+/* BODY */
+.cb-body-animator {
+  overflow: hidden;
+  position: relative;
+  will-change: height;
+}
+
+.cb-body-measurer {
+  padding: 16px;
+}
+
+.cb-view-wrapper {
+  width: 100%;
+}
+
+/* FOOTER (Where Close Button lives) */
+.cb-footer {
+  /* Removed flex layout since button is now absolute */
+}
+
+.cb-close-btn {
+  /* Exactly matches the inner shell of the launcher (48x48) */
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px; 
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 10;
+}
+
+.cb-close-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+}
+
+/* CHAT VIEW */
+.cb-chat-view {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 56px; /* Prevents content from going under the absolute close button */
+}
+
+.cb-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 240px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.cb-messages::-webkit-scrollbar {
+  width: 4px;
+}
+.cb-messages::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.cb-msg {
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  font-family: 'SF Pro Text', sans-serif;
+  color: #eeeeee;
+  max-width: 85%;
+}
+
+.cb-msg--assistant {
+  align-self: flex-start;
+  background: #222222;
+  border-bottom-left-radius: 4px;
+}
+
+.cb-msg--user {
+  align-self: flex-end;
+  background: #007aff;
+  border-bottom-right-radius: 4px;
+}
+
+.cb-prompts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cb-prompt {
+  background: transparent;
+  border: 1px solid #333333;
+  color: #aaaaaa;
+  border-radius: 20px;
+  padding: 6px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cb-prompt:hover {
+  border-color: #007aff;
+  color: #007aff;
+}
+
+.cb-composer {
+  display: flex;
+  gap: 8px;
+}
+
+.cb-composer input {
+  flex: 1;
+  background: #222222;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: white;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.cb-composer input:focus {
+  border-color: #007aff;
+}
+
+.cb-composer button {
+  background: #007aff;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cb-composer button:hover {
+  background: #006ae0;
+}
+
+/* PROFILE VIEW */
+.cb-profile-view {
+  padding-bottom: 56px;
+}
+
+.cb-profile-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.cb-profile-card {
+  background: #222222;
+  border-radius: 10px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cb-profile-label {
+  font-size: 0.7rem;
+  color: #888888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.cb-profile-value {
+  font-size: 0.85rem;
+  color: #eeeeee;
+  line-height: 1.4;
+}

@@ -1,0 +1,162 @@
+===== IDENTITY =====
+Name: Dhivagar B
+Role: Full Stack Developer | AI Developer | Software Engineer Intern
+Location: Tamil Nadu, India
+Email: dhivagar0506@gmail.com
+Phone: 9943167733
+Portfolio: http://dhivagar130506.netlify.app/
+LinkedIn: https://www.linkedin.com/in/dhivagarb1305
+
+===== PROFESSIONAL SUMMARY =====
+Dhivagar B is a highly motivated Full Stack Developer and aspiring AI Engineer with practical experience in building scalable web applications and intelligent systems. He combines modern frontend and backend technologies with AI capabilities to develop real-world solutions.
+
+He has hands-on experience with React.js, FastAPI, Spring Boot, Java, and Python, along with PostgreSQL and Firebase. His work focuses on responsive user interfaces, efficient backend APIs, and AI service integration.
+
+Currently, he is working as a Software Development Engineer Intern at MUA Technologies Pvt Ltd, where he contributes to backend engineering, cloud-based workflows, and deployment processes.
+
+He is especially interested in Generative AI, Retrieval-Augmented Generation (RAG), and AI-driven applications.
+
+===== CORE SKILLS =====
+- Full Stack Web Development
+- AI Application Development
+- REST API Design and Integration
+- Backend Development (FastAPI, Spring Boot)
+- Frontend Development (React.js)
+- Database Management (SQL and NoSQL)
+- AI Chatbot Development
+- Problem Solving and Data Structures
+
+===== TECHNICAL SKILLS =====
+Programming Languages: Java, JavaScript, Python
+Frontend Technologies: HTML5, CSS3, React.js
+Backend Technologies: FastAPI, Spring Boot, RESTful APIs
+Databases: PostgreSQL, Firebase
+Tools and Platforms: Git, GitHub, Docker, Appwrite, Postman, Metabase
+AI Technologies: Generative AI APIs (Gemini, OpenRouter), RAG Architecture, Embeddings and Vector Search (FAISS/Chroma)
+Concepts: Object-Oriented Programming, Data Structures (Intermediate), API Architecture, Modular System Design
+
+===== PROJECTS =====
+
+1. Career Chatbot (AI-Based Career Assistant)
+   Overview: A full-stack AI-powered application designed to help users choose career paths, improve skills, and access learning resources.
+   Key Features:
+   - AI chatbot for personalized career guidance
+   - Integration with Generative AI APIs
+   - YouTube API for learning content recommendations
+   - Aptitude test system
+   - User progress tracking
+   - Skill-based learning roadmap
+   - Secure authentication with Firebase
+   Tech Stack: React.js, FastAPI, Gemini API, YouTube API, Firebase
+   Architecture: REST API-based backend with frontend communication through APIs and dynamic AI responses
+   Outcome: Demonstrates the ability to build intelligent applications by integrating AI with full-stack development
+
+===== PROFESSIONAL EXPERIENCE =====
+
+Company: SkillSync info Tech
+Role: JAVA Full Stack Developer (Intern)
+Duration: Sep 2025 - Nov 2025
+
+Responsibilities:
+
+- Developed backend APIs for real-world applications, and Frontend Design
+- Configured backend services using Redis
+- Practiced Git workflows and version control
+- Worked on debugging and testing
+
+
+Company: MUA Technologies Pvt Ltd (MUA Cloud)
+Role: Software Development Engineer (Intern)
+Duration: March 2026 - till now
+
+Responsibilities:
+- Developed backend APIs for real-world applications
+- Assisted in deploying cloud-based systems
+- Configured backend services using Appwrite
+- Practiced Git workflows and version control
+- Worked on debugging and testing
+
+Key Learnings:
+- Real-world software development lifecycle
+- Deployment strategies and environment setup
+- Backend system architecture
+- Team collaboration and coding standards
+
+===== EDUCATION =====
+
+B.Tech - Information Technology
+Mailam Engineering College (2023 - Present)
+CGPA: 8.61
+
+Higher Secondary Education:
+Sri Annai Raani Convent Higher Secondary School
+Percentage: 81.3%
+
+===== CERTIFICATIONS & ACHIEVEMENTS =====
+
+- First Prize in Paper Presentation (3 times)
+- Java Fundamentals Certification
+- Python Certification
+- Programming in JAVA in NPTEL with 90.34% (Gold)
+===== LEADERSHIP & COMMUNITY =====
+
+- Event Coordinator - INTELINFO 2K25
+- Managed technical event planning and execution
+- Coordinated participants and scheduling
+
+
+===== SOFT SKILLS =====
+
+- Problem Solving
+- Communication Skills
+- Team Collaboration
+- Fast Learner
+- Leadership
+
+===== INTERESTS & CAREER GOALS =====
+
+- Building AI-powered applications
+- Generative AI and LLM systems
+- RAG-based chatbot systems
+- Full-stack system design
+- Open-source contribution
+
+===== AI ASSISTANT PERSONALITY =====
+
+- Answer professionally and clearly
+- Use only the provided data
+- If information is missing, say: "I don't have that information."
+- Highlight skills, projects, and experience where relevant
+- Keep answers concise but informative
+
+===== QUICK FACTS =====
+
+Q: Who is Dhivagar?
+A: Dhivagar B is a Full Stack Developer and AI Developer with experience in building web applications and AI-powered systems using React.js, FastAPI, and modern backend technologies.
+
+Q: What are Dhivagar's skills?
+A: Dhivagar's skills include Java, Python, JavaScript, React.js, FastAPI, Spring Boot, PostgreSQL, Firebase, Docker, and AI integration.
+
+Q: What projects has Dhivagar built?
+A: Dhivagar developed Career Chatbot, an AI-powered application that provides career guidance, learning recommendations, and skill tracking.
+
+Q: Does Dhivagar have AI experience?
+A: Yes, Dhivagar has experience integrating Generative AI APIs and building AI-powered chatbot systems using RAG concepts.
+
+Q: Where did Dhivagar work?
+A: Dhivagar working as a Software Development Engineer Intern at MUA Technologies Pvt Ltd.
+
+Q: What are Dhivagar's interests?
+A: Dhivagar is interested in Generative AI, chatbot development, full-stack engineering, and building intelligent systems.
+
+===== SEARCH KEYWORDS =====
+
+Dhivagar B
+Full Stack Developer
+AI Developer Tamil Nadu
+React FastAPI Developer
+Career Chatbot Project
+Java Spring Boot Developer
+RAG Chatbot Developer
+AI Portfolio Developer
+Software Engineer Intern India

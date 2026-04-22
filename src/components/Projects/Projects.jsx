@@ -1,109 +1,61 @@
-/*
 import React from 'react';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
-
-const Projects = () => {
-  const [ref, isVisible] = useIntersectionObserver({ threshold: 0.1 });
-
-  return (
-    <section id="projects" ref={ref}>
-      <div className="container">
-        <h2 className={`section-title ${isVisible ? 'animate-in' : ''}`}>Projects</h2>
-        <div className="projects-grid">
-          <div 
-              className={`project-card ${isVisible ? 'animate-in' : ''}`}
-              style={{ animationDelay: `0.1s` }}
-          >
-            <h3>Smart Mentis</h3>
-            <p className="project-domain">Smart Education</p>
-            <p>An AI-driven career guidance system for assessing aptitude, interests, and skills to provide personalized career recommendations.</p>
-            <p className="project-stack"><strong>Stack:</strong> React JS, FastAPI, Firebase</p>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default Projects;
-*/
-import React, { useEffect, useRef, useState } from 'react';
 import './Projects.css';
+import useScrollReveal from '../../hooks/useScrollReveal';
+import vita5Image from '../../../assests/Vita5.jpeg';
+import agriDetectImage from '../../../assests/Agridetect.png';
+import smartMentisImage from '../../../assests/Smartmentis.jpeg';
 
 const Projects = () => {
+  const revealRef = useScrollReveal({ threshold: 0.1 });
+
   const projectData = [
     {
-      title: 'Smart Mentis',
-      description:
-        'A comprehensive AI-driven career guidance system designed to help individuals make informed career decisions by holistically assessing their aptitude, interests, skills, and potential career trajectories.',
-      tech: ['React js', 'Fast API', 'Firebase'],
-      link: '#',
-      domain:"Smart Education"
+      title: 'Vita5',
+      subtitle: 'SOS Application',
+      bgImg: `url(${vita5Image})`,
+      description: 'Mobile safety app // Real-time emergency alerts and location sharing to trusted contacts.',
+      tech: 'Modern Stack'
     },
-   
-    
+    {
+      title: 'AgriDetect',
+      subtitle: 'Digital Agriculture',
+      bgImg: `url(${agriDetectImage})`,
+      description: 'Farmer support system // Livestock management, agricultural marketplace, and expert consultation.',
+      tech: 'Modern Stack'
+    },
+    {
+      title: 'Smart Mentis',
+      subtitle: 'EdTech',
+      bgImg: `url(${smartMentisImage})`,
+      description: 'AI career guidance // Intelligent aptitude assessment with personalized recommendations.',
+      tech: 'React, FastAPI, Firebase'
+    }
   ];
 
-  const projectsRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect(); // trigger only once
-        }
-      },
-      { threshold: 0.3 }
-    );
-
-    if (projectsRef.current) {
-      observer.observe(projectsRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
-    <section
-      id="projects"
-      ref={projectsRef}
-      className={`projects-section ${isVisible ? 'visible' : ''}`}
-    >
-      <h2 className="section-title">Some Things I've Built</h2>
-      <div className="projects-grid">
-        {projectData.map((project, index) => (
-          <div key={index} className="project-card" style={{ animationDelay: `0.1s` }}>
-            <div className="project-inner">
-              <header>
-                <div className="project-top">
-                  {/* <div className="folder-icon">// Folder Icon</div> */}
-                  <a
-                    href={project.link}
-                    className="external-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {/* // Link Icon */}
-                  </a>
+    <section id="projects" ref={revealRef} className="projects-section reveal-hidden">
+      <div className="wrapper">
+        <h1 className="parallax-title">Projects</h1>
+        <div className="cols">
+          {projectData.map((project, index) => (
+            <div className="col" key={index} onTouchStart={(e) => e.currentTarget.classList.toggle('hover')}>
+              <div className="container">
+                <div className="front" style={{ backgroundImage: project.bgImg }}>
+                  <div className="inner">
+                    <p>{project.title}</p>
+                    <span>{project.subtitle}</span>
+                  </div>
                 </div>
-                <h3 className="project-title">{project.title}</h3>
-                <div className="project-description">
-                  <p>{project.description}</p>
+                <div className="back">
+                  <div className="inner">
+                    <p className="description-text">{project.description}</p>
+                    <span className="tech-stack-text">{project.tech}</span>
+                  </div>
                 </div>
-                <p className="project-domain"><strong>Domain:</strong> {project.domain}</p>
-              </header>
-              <footer>
-                <ul className="project-tech-list">
-                  {project.tech.map((tech, i) => (
-                    <li key={i}>{tech}</li>
-                  ))}
-                </ul>
-              </footer>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

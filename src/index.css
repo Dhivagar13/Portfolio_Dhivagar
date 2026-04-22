@@ -1,21 +1,29 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
 
 :root {
   --background: #09090b; /* hsl(240 15% 4%) */
   --foreground: #f1f5f9; /* hsl(210 40% 95%) */
+  --font-heading: 'Playfair Display', serif;
+  --font-body: 'Poppins', sans-serif;
+  --font-accent: 'Quicksand', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Poppins', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background);
+  background-color: transparent;
   color: var(--foreground);
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Playfair Display', serif;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 code, pre {

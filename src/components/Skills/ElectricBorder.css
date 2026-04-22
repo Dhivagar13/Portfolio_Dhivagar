@@ -1,0 +1,65 @@
+.electric-border-wrapper {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.electric-border-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+
+.electric-svg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  overflow: visible;
+}
+
+.electric-base {
+  fill: none;
+  stroke: var(--e-color);
+  stroke-width: calc(var(--e-thickness) / 2);
+  opacity: 0.15;
+}
+
+.electric-ray {
+  fill: none;
+  stroke: var(--e-color);
+  stroke-width: var(--e-thickness);
+  stroke-linecap: round;
+  stroke-dasharray: 40 200;
+  stroke-dashoffset: 0;
+  animation: electric-dash linear infinite;
+  animation-duration: var(--e-speed, 2s);
+}
+
+.electric-ray.ray-reverse {
+  stroke-dasharray: 60 180;
+  stroke-dashoffset: 100;
+  animation-direction: reverse;
+  animation-duration: calc(var(--e-speed, 2s) * 1.5);
+  opacity: 0.8;
+}
+
+.electric-border-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+}
+
+@keyframes electric-dash {
+  0% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: 400;
+  }
+}

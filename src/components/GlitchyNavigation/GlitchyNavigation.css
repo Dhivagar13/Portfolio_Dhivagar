@@ -1,0 +1,137 @@
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@300&display=swap");
+
+.glitchy-nav {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(61, 62, 74, 0.9) 0%, rgba(30, 30, 40, 0.9) 100%);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(76, 179, 250, 0.1);
+}
+
+.glitchy-nav a {
+  align-items: center;
+  color: #0c090d;
+  display: flex;
+  flex-direction: column;
+  font-family: "PT Sans Narrow", serif;
+  font-weight: 400;
+  position: relative;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+  padding: 12px 0;
+  min-width: 80px;
+  justify-content: center;
+}
+
+.glitchy-nav a:focus-visible {
+  outline: 2px solid #fc51c9;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.glitchy-nav a:hover {
+  transform: scale(1.05);
+}
+
+.glitchy-nav i {
+  font-size: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  position: relative;
+  width: 42px;
+  height: 42px;
+}
+
+.glitchy-nav i.pink,
+.glitchy-nav i.blue {
+  opacity: 0;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.glitchy-nav i.pink {
+  color: #fc51c9;
+  text-shadow: 0 0 12px #e707f7, 0 0 24px #e707f7, 0 0 36px rgba(231, 7, 247, 0.5);
+  filter: drop-shadow(0 0 8px #fc51c9);
+}
+
+.glitchy-nav i.blue {
+  color: #05ddfa;
+  mix-blend-mode: color-dodge;
+  text-shadow: 0 0 12px #05ddfa, 0 0 24px #05ddfa;
+  filter: drop-shadow(0 0 8px #05ddfa);
+}
+
+.glitchy-nav a span {
+  transition: color 150ms ease-in-out;
+  margin-top: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #b0b0b0;
+  font-weight: 500;
+}
+
+.glitchy-nav a.active span {
+  color: #fff;
+  text-shadow: 0 0 12px #e707f7;
+  font-weight: 600;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .glitchy-nav {
+    gap: 10px;
+    padding: 15px;
+    border-radius: 8px;
+  }
+
+  .glitchy-nav a {
+    min-width: 60px;
+    padding: 8px 0;
+  }
+
+  .glitchy-nav i {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .glitchy-nav a span {
+    font-size: 10px;
+    margin-top: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .glitchy-nav {
+    gap: 5px;
+    padding: 10px;
+  }
+
+  .glitchy-nav a {
+    min-width: 50px;
+    padding: 6px 0;
+  }
+
+  .glitchy-nav i {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .glitchy-nav a span {
+    font-size: 9px;
+    margin-top: 4px;
+  }
+}
