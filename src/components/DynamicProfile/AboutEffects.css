@@ -1,0 +1,75 @@
+/* =========================================================================
+   About Section Effect Options
+   Copy the ones you like into your main DynamicProfile.css!
+   ========================================================================= */
+
+/* 1. 🔥 Glowing Row Hover (Neon Border Sweep) */
+#about .row {
+  border-left: 3px solid transparent;
+  transition: border-color 0.3s ease, padding-left 0.3s ease;
+}
+#about .row:hover {
+  border-left: 3px solid var(--ink-profile);
+  padding-left: 12px;
+  box-shadow: -4px 0 20px rgba(0, 240, 255, 0.25);
+}
+
+/* 2. ✨ Pulsing Dot on Scroller */
+#about .dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.8); opacity: 0.4; }
+}
+
+/* 3. 🃏 Glassmorphism Stats Cards */
+#about .stat-item {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  border-radius: 12px;
+  padding: 1rem 0.5rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+#about .stat-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+}
+
+/* 4. 🏷️ Floating Row Tag Animation */
+#about .row-tag {
+  transform: translateX(8px);
+  opacity: 0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+#about .row:hover .row-tag {
+  transform: translateX(0);
+  opacity: 0.9;
+}
+
+/* 5. 🌊 Counter Number Shimmer */
+#about .stat-value {
+  background: linear-gradient(90deg, #00ff99, #00f0ff, #00ff99);
+  background-size: 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: stat-shimmer 3s linear infinite;
+}
+@keyframes stat-shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+/* 6. 🔢 Row Number Counter (pure CSS) */
+#about .row-tag::before {
+  content: attr(data-index);  /* pass index as data attr in JSX */
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.5rem;
+  color: rgba(255,255,255,0.1);
+  font-family: monospace;
+}

@@ -4,7 +4,7 @@ import './App.css';
 // Import Components
 import Header from './components/Header/Header';
 import Home from './components/Home/Home';
-import About from './components/About/About';
+import DynamicProfile from './components/DynamicProfile/DynamicProfile';
 import Skills from './components/Skills/Skills';
 import Projects from './components/Projects/Projects';
 import Showcase from './components/Showcase/Showcase';
@@ -32,7 +32,7 @@ function App() {
         <Header />
         <main>
           <Home />
-          <About />
+          <DynamicProfile />
           <Skills />
           <Projects />
           <Showcase />

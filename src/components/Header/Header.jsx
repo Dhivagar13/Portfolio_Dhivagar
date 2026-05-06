@@ -46,6 +46,8 @@ const Header = () => {
     };
   }, []);
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const getNodes = (container, selector) => {
     return gsap.utils.selector(container)(selector);
   };
@@ -105,6 +107,10 @@ const Header = () => {
     }
   };
 
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <header className={`navbar-fixed-top ${isDown ? 'is-slid-up' : ''} ${scrolled ? 'scrolled' : ''}`}>
       <nav className="navbar-inner header-main">
@@ -114,37 +120,47 @@ const Header = () => {
             <a href="#home" data-magnetic>&lt;DHIVAGAR/&gt;</a>
           </div>
 
-          <ul className="nav-list pull-right">
+          {/* Hamburger Mobile Toggle */}
+          <div 
+            className={`mobile-toggle ${isMobileMenuOpen ? 'open' : ''}`}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <ul className={`nav-list pull-right ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
             <li className="nav-item">
-              <a href="#about" className="nav-link" data-magnetic>
-                <span className="glitch-pink">ABOUT</span>
-                <span className="glitch-blue">ABOUT</span>
-                <span className="label">ABOUT</span>
+              <a href="#about" className="nav-link" data-magnetic onClick={closeMobileMenu}>
+                <span className="glitch-pink">PROFILE</span>
+                <span className="glitch-blue">PROFILE</span>
+                <span className="label">PROFILE</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#skills" className="nav-link" data-magnetic>
+              <a href="#skills" className="nav-link" data-magnetic onClick={closeMobileMenu}>
                 <span className="glitch-pink">STACK</span>
                 <span className="glitch-blue">STACK</span>
                 <span className="label">STACK</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#projects" className="nav-link" data-magnetic>
+              <a href="#projects" className="nav-link" data-magnetic onClick={closeMobileMenu}>
                 <span className="glitch-pink">WORK</span>
                 <span className="glitch-blue">WORK</span>
                 <span className="label">WORK</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#achievements" className="nav-link" data-magnetic>
+              <a href="#achievements" className="nav-link" data-magnetic onClick={closeMobileMenu}>
                 <span className="glitch-pink">RECORDS</span>
                 <span className="glitch-blue">RECORDS</span>
                 <span className="label">RECORDS</span>
               </a>
             </li>
             <li className="nav-item">
-              <a href="#contact" className="nav-link" data-magnetic>
+              <a href="#contact" className="nav-link" data-magnetic onClick={closeMobileMenu}>
                 <span className="glitch-pink">LET'S TALK</span>
                 <span className="glitch-blue">LET'S TALK</span>
                 <span className="label">LET'S TALK</span>

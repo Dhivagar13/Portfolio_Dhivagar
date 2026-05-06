@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
-import useMeasure from 'react-use-measure';
 import bioText from '../../../backend/data/bio.txt?raw';
 import './ChatbotWidget.css';
 
@@ -174,8 +173,6 @@ function ChatbotWidget() {
   const [direction, setDirection] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
   
-  const [ref, bounds] = useMeasure();
-  
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState(starterMessages);
   const messagesEndRef = useRef(null);
@@ -322,12 +319,17 @@ function ChatbotWidget() {
                 {/* Animated Body */}
                 <motion.div
                   className="cb-body-animator"
-                  animate={{ height: bounds.height > 0 ? bounds.height : 'auto' }}
+                  layout
+                  transition={{
+                    type: 'spring',
+                    bounce: 0.2,
+                    duration: 0.8,
+                  }}
                 >
-                  <div ref={ref} className="cb-body-measurer">
+                  <div className="cb-body-measurer">
                     <AnimatePresence
                       custom={direction}
-                      mode="popLayout"
+                      mode="wait"
                       onExitComplete={() => setIsAnimating(false)}
                     >
                       <motion.div

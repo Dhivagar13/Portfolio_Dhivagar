@@ -1,0 +1,224 @@
+/* ─────────────────────────────────────────
+   DynamicProfile Section – Design Tokens
+   ───────────────────────────────────────── */
+#about {
+  --bg-profile:    transparent;
+  --panel-profile: #0f1420;
+  --ring-profile:  #23283a;
+  --ink-profile:   #00f0ff;
+  --muted-profile: #9aa3b2;
+  --accent-profile: #00ff99;
+
+  width: min(900px, 90vw);
+  margin: 0 auto;
+  padding-block: 5vh 8vh;
+  min-height: 90vh;
+  color: var(--ink-profile);
+  font-family: inherit;
+  position: relative;  
+  z-index: 1;
+}
+
+/* ─── Spacers ─── */
+#about .spacer {
+  display: grid;
+  place-items: center;
+  height: clamp(6vh, 10vh, 13vh);
+}
+
+#about .scroller {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--muted-profile);
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border: 1px solid var(--ring-profile);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--panel-profile), transparent 40%);
+}
+
+#about .scroller .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent-profile);
+  flex-shrink: 0;
+}
+
+/* ─── Eyebrow ─── */
+#about .eyebrow {
+  color: var(--muted-profile);
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-family: var(--font-accent, 'Quicksand', sans-serif);
+  font-weight: 600;
+}
+
+/* ─── Row (text lines) – LEFT ALIGNED ─── */
+#about .row {
+  position: relative;
+  display: block;           /* block so width is full, no grid centering */
+  min-height: clamp(52px, 8vh, 80px);
+  border-top: 1px solid var(--ring-profile);
+  overflow: clip;
+  font-weight: 700;
+  font-family: 'Syncopate', sans-serif;  /* futuristic all-caps feel */
+  font-size: clamp(0.9rem, 2vw, 1.7rem);
+  line-height: 1;
+  outline: none;
+  margin: 0;
+  letter-spacing: 0.08em;  /* Syncopate needs breathing room */
+  text-align: left;
+  text-transform: uppercase;
+}
+
+#about .row:last-of-type {
+  border-bottom: 1px solid var(--ring-profile);
+}
+
+#about .row:focus-visible {
+  box-shadow: 0 0 0 2px var(--accent-profile) inset;
+}
+
+/* ─── Fill (animated text paint) ─── */
+#about .fill {
+  position: relative;
+  display: flex;             /* flex so tag sits inline, aligned */
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  padding: clamp(6px, 1.6vh, 14px) 0;
+  font-size: clamp(14px, 2.4vw, 36px);
+  color: rgba(255, 255, 255, 0.92); /* bright white base — GSAP cyan paints on scroll */
+
+  background-image:
+    linear-gradient(90deg, var(--ink-profile), var(--ink-profile)),
+    linear-gradient(
+      120deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.65) 50%,
+      transparent 100%
+    );
+  background-repeat: no-repeat, no-repeat;
+  background-size: 0% 100%, 35% 100%;
+  background-position: 0 0, -150% 0;
+
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: background-size 0.4s cubic-bezier(0.2, 0.6, 0.3, 1);
+}
+
+/* ─── Sheen animation ─── */
+@keyframes sheen-move {
+  0%   { background-position: 0 0, -150% 0; }
+  100% { background-position: 0 0,  150% 0; }
+}
+
+#about .row:hover .fill,
+#about .row:focus-within .fill {
+  animation: sheen-move 950ms ease;
+}
+
+/* ─── Sub-detail tag (badge) ─── */
+#about .row-tag {
+  display: inline-block;
+  font-size: 0.55rem;
+  font-family: var(--font-accent, 'Quicksand', sans-serif);
+  font-weight: 700;
+  color: var(--accent-profile);
+  border: 1px solid var(--accent-profile);
+  border-radius: 3px;
+  padding: 1px 5px;
+  vertical-align: middle;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  flex-shrink: 0;         /* Don't squish tag */
+  align-self: center;
+  /* Tags should NOT inherit the background-clip:text from .fill */
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  background-image: none;
+  color: var(--accent-profile);
+}
+
+/* ─── Stats grid ─── */
+#about .stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-block: 2rem;
+  padding-block: 1.2rem;
+  border-top: 1px solid var(--ring-profile);
+  border-bottom: 1px solid var(--ring-profile);
+}
+
+#about .stat-item {
+  text-align: center;
+}
+
+#about .stat-value {
+  display: block;
+  font-family: var(--font-heading, 'Playfair Display', serif);
+  font-size: clamp(1.3rem, 2.8vw, 2rem);
+  font-weight: 900;
+  color: var(--accent-profile);
+  line-height: 1;
+}
+
+#about .stat-label {
+  display: block;
+  font-size: 0.62rem;
+  color: var(--muted-profile);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-top: 0.2rem;
+}
+
+/* ─── Magnetic Text ─── */
+/*
+ * .magnetic-text is a <span> rendered INSIDE .fill.
+ * background-clip:text on .fill controls colour via GSAP scroll-paint.
+ * Magnetic effect only touches `transform` — no colour conflict.
+ */
+#about .magnetic-text {
+  cursor: crosshair;
+  user-select: none;
+  display: inline; /* stay inline so background-clip: text covers naturally */
+}
+
+#about .mag-letter {
+  display: inline-block;
+  transition: transform 0.12s cubic-bezier(0.23, 1, 0.32, 1);
+  will-change: transform;
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  #about .fill,
+  #about .row,
+  #about .mag-letter {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 600px) {
+  #about {
+    padding-block: 4vh 6vh;
+  }
+
+  #about .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #about .fill {
+    flex-wrap: wrap;
+  }
+}

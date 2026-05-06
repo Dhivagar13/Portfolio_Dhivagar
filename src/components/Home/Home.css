@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&display=swap');
 
-.home-section-dramatic {
+/* ─────────────────────────────────────────
+   Home Section
+   ───────────────────────────────────────── */
+.home-section {
   min-height: 100vh;
   width: 100%;
   position: relative;
@@ -12,6 +15,9 @@
   background: transparent;
 }
 
+/* ─────────────────────────────────────────
+   Hero Container (scroll-parallax wrapper)
+   ───────────────────────────────────────── */
 .hero-container {
   position: relative;
   width: 100%;
@@ -20,40 +26,73 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-top: 4rem; /* Offset for header */
+  margin-top: 4rem;
+  will-change: transform;
 }
 
-/* Background Name: Giant transparent stroke */
+/* ─────────────────────────────────────────
+   Tiltable Text Layers
+   ───────────────────────────────────────── */
+.hero-tiltable {
+  transition: transform 0.12s ease-out;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+/* ─────────────────────────────────────────
+   Background Stroke Name
+   ───────────────────────────────────────── */
 .hero-name-bg {
   position: absolute;
-  top: 45%; /* Slightly above center to accommodate subtitle/marquee below */
+  top: 46%;
   left: 50%;
+  /* Base translate; JS overrides transform completely, so we rely on
+     a wrapper div keeping the element centred via positioning */
   transform: translate(-50%, -50%);
   font-family: var(--font-heading, 'Playfair Display', serif);
   font-size: clamp(2.5rem, 8.5vw, 10rem);
   font-weight: 900;
   text-align: center;
   white-space: nowrap;
-  letter-spacing: 0.05em;
+  letter-spacing: 3px;
   color: transparent;
-  -webkit-text-stroke: 2px white;
+  -webkit-text-stroke: 2px rgba(255,255,255,0.9);
   z-index: 1;
-  pointer-events: none; 
-  transition: opacity 0.5s;
+  pointer-events: none;
+  text-shadow: 0 0 5px rgba(14, 3, 0, 0.5);
+  filter: blur(0.6px);
+  animation: nameFlicker 3600ms linear infinite;
 }
 
-/* The actual person image layered perfectly on top */
+@keyframes nameFlicker {
+  0%, 100%  { filter: blur(0.6px); }
+  18%       { filter: blur(1.2px); letter-spacing: 3px; }
+  36%       { filter: blur(0.4px); }
+  54%       { filter: blur(1px);   }
+  72%       { filter: blur(0.2px); letter-spacing: 3.5px; }
+  90%       { filter: blur(0.8px); }
+}
+
+.hero-name-bg:hover {
+  letter-spacing: 6px;
+  transition: letter-spacing 0.8s ease;
+  pointer-events: auto;
+}
+
+/* ─────────────────────────────────────────
+   Portrait Image
+   ───────────────────────────────────────── */
 .hero-image-wrapper {
   position: relative;
   z-index: 2;
-  height: 65vh; /* Scale photo height */
+  height: 65vh;
   max-width: 95vw;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  pointer-events: none; /* Image shouldn't block cursor */
-  
-  /* Fade out bottom of image into the background so it doesn't look cut off */
+  pointer-events: none;
+
+  /* Fade-out at bottom so it merges with background */
   -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
 }
@@ -62,13 +101,15 @@
   height: 100%;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 0 40px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 0 40px rgba(0, 0, 0, 0.5));
 }
 
-/* Foreground Subtitle: Vibrant green below the image */
+/* ─────────────────────────────────────────
+   Subtitle Foreground
+   ───────────────────────────────────────── */
 .hero-subtitle-fg {
   position: absolute;
-  top: 70%; /* Under the name */
+  top: 70%;
   left: 50%;
   transform: translateX(-50%);
   font-family: var(--font-accent, 'Quicksand', sans-serif);
@@ -80,61 +121,82 @@
   z-index: 3;
   text-transform: uppercase;
   pointer-events: none;
-  text-shadow: 0 4px 20px rgba(0,0,0,0.8); /* Important to pop off the cutout */
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
 }
 
-/* Continuous Bottom Marquee */
+/* ─────────────────────────────────────────
+   Marquee Plane — guaranteed edge-to-edge
+   ───────────────────────────────────────── */
 .hero-marquee-container {
   position: absolute;
   bottom: 0;
-  width: 100%;
-  background: rgba(10, 10, 15, 0.4);
-  backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(200, 255, 71, 0.2);
-  border-bottom: 1px solid rgba(200, 255, 71, 0.2);
-  overflow: hidden;
+  left: 0;             /* flush left edge */
+  right: 0;            /* flush right edge */
+  width: 100vw;        /* force full viewport width */
+  background: rgba(10, 10, 15, 0.48);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(200, 255, 71, 0.28);
+  border-bottom: 1px solid rgba(200, 255, 71, 0.28);
+  overflow: hidden;    /* clip the looping tail */
   display: flex;
   white-space: nowrap;
-  padding: 1rem 0;
+  padding: 0.9rem 0;
   z-index: 4;
 }
 
+/* Track: 2 identical halves so we shift by exactly 50% for a seamless loop */
 .hero-marquee-track {
   display: flex;
-  width: fit-content;
-  animation: marquee 25s linear infinite;
+  width: max-content;
+  /* Start at x=0 so text begins right at the left edge */
+  transform: translateX(0);
+  animation: marquee-scroll 36s linear infinite;
 }
 
 .hero-marquee-content {
   font-family: var(--font-body, 'Poppins', sans-serif);
-  font-size: 0.85rem;
-  letter-spacing: 0.25em;
+  font-size: 0.82rem;
+  letter-spacing: 0.22em;
   font-weight: 700;
-  color: white;
-  padding-right: 2rem;
+  color: rgba(255, 255, 255, 0.92);
+  padding: 0 1.5rem;   /* symmetric padding so text starts/ends at container edge */
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  user-select: none;
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%); /* Moves exactly half the width since we duplicated content x4, 50% is clean loop if sized right, actually let's do precise loop */
-  }
+/*
+  We render 6 copies. The loop shifts by exactly 1/6th (16.6667%) so that
+  copy[0]'s end perfectly meets copy[1]'s start — seamless infinite scroll.
+  With 6 copies, the last copy is always partially visible on the right edge.
+*/
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-16.6667%); }
 }
 
-/* Responsive Overrides */
+/* ─────────────────────────────────────────
+   Responsive
+   ───────────────────────────────────────── */
 @media screen and (max-width: 768px) {
   .hero-name-bg {
-    -webkit-text-stroke: 1px white;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.9);
     top: 40%;
   }
+
   .hero-subtitle-fg {
     top: 65%;
+    font-size: clamp(0.7rem, 4vw, 1.2rem);
+    letter-spacing: 0.2em;
   }
+
   .hero-image-wrapper {
     height: 55vh;
+  }
+
+  .hero-marquee-content {
+    font-size: 0.75rem;
   }
 }

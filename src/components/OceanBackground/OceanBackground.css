@@ -7,6 +7,10 @@
   pointer-events: none;
 }
 
+#webgl_canvas.fade-out {
+  opacity: 0;
+}
+
 #hud {
   position: fixed;
   top: 2rem;

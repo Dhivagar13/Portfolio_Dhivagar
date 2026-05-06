@@ -6,9 +6,10 @@ const N = NAMES.length;
 
 const OceanBackground = () => {
   const canvasRef = useRef(null);
-  const [hudPct, setHudPct] = useState("000%");
-  const [hudScene, setHudScene] = useState(0);
-  const [progWidth, setProgWidth] = useState(0);
+  const hudPctRef = useRef(null);
+  const progFillRef = useRef(null);
+  const sceneLabelRef = useRef(null);
+  const sceneDotsRef = useRef([]);
   const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
@@ -164,8 +165,14 @@ const OceanBackground = () => {
       vec3 ro = vec3(0.0, camY, camZ);
       vec3 rd = normalize(vec3(uv.x, uv.y - pitch, -1.4));
 
-      float storm = smoothstep(0.80, 1.0, s);
-      float night = smoothstep(0.56, 0.84, s);
+      // Drive night/storm from scene index so they only activate PAST Projects.
+      // uSc = scene index (0=Home, 1=About, 2=Skills, 3=Projects, 4=Showcase)
+      // uBl = blend within current scene (0..1)
+      float scenePos  = uSc + uBl;          // 0.0 (Home start) to 3.99 (end of scene 3)
+      // Night starts at scene 4+ (Showcase) and deepens through to end
+      float night = smoothstep(3.0, 4.0, scenePos);
+      // Storm peaks at the very end
+      float storm = smoothstep(3.6, 4.0, scenePos);
 
       vec3 skyTop = sCol(vec3(0.18, 0.06, 0.24), vec3(0.05, 0.24, 0.68), vec3(0.26, 0.06, 0.04), vec3(0.01, 0.01, 0.05), vec3(0.04, 0.05, 0.09));
       vec3 skyHori = sCol(vec3(0.92, 0.48, 0.18), vec3(0.42, 0.62, 0.90), vec3(0.88, 0.32, 0.04), vec3(0.03, 0.05, 0.14), vec3(0.15, 0.17, 0.23));
@@ -174,7 +181,10 @@ const OceanBackground = () => {
       vec3 seaShlo = sCol(vec3(0.28, 0.17, 0.24), vec3(0.09, 0.38, 0.60), vec3(0.24, 0.13, 0.06), vec3(0.04, 0.06, 0.16), vec3(0.07, 0.10, 0.14));
       vec3 fogCol = sCol(vec3(0.80, 0.50, 0.30), vec3(0.58, 0.72, 0.90), vec3(0.70, 0.28, 0.05), vec3(0.02, 0.03, 0.08), vec3(0.12, 0.14, 0.18));
 
-      float sunProgress = clamp(s / 0.35, 0.0, 1.0);
+      // Sun arc: s goes 0 (Home) → 1 (Projects top)
+      // Multiply by 0.90 so at s=1 the sun is at sunAngle=162° (barely touching
+      // horizon = golden hour). At s=0 it starts below horizon = pre-dawn.
+      float sunProgress = clamp(s * 0.90, 0.0, 1.0);
       float sunAngle = sunProgress * PI;
       vec3 sunDir = normalize(vec3(cos(sunAngle) * -0.75, sin(sunAngle) * 0.38 - 0.08, -1.0));
       vec3 moonDir = normalize(vec3(-0.14, 0.42, -1.0));
@@ -284,7 +294,8 @@ const OceanBackground = () => {
 
     let animationId;
     let t0 = performance.now();
-    let smoothScroll = 0;
+    let smoothScroll     = 0;  // sun arc: 0 (Home) → 1 (Projects)
+    let smoothScrollFull = 0;  // scene index: 0 (Home) → 1 (full page bottom)
 
     const resize = () => {
       const cw = window.innerWidth;
@@ -311,25 +322,83 @@ const OceanBackground = () => {
       const [r, g, b] = hexToVec3(bgColors[theme] || bgColors.dark);
       gl.uniform3f(uBg, r, g, b);
 
-      let maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-      const showcaseEl = document.getElementById('achievements');
-      if (showcaseEl) {
-          // Finish background transition right as we reach the Showcase
-          maxScroll = Math.max(1, showcaseEl.offsetTop);
-      }
-      
-      const scrollTarget = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-      
-      // Better smooth scroll interpolation
-      smoothScroll += (scrollTarget - smoothScroll) * 0.08;
-      
-      const raw = smoothScroll * (N - 1);
-      const si = Math.min(Math.floor(raw), N - 2);
-      const bl = raw - si;
+      // ── TWO-SCROLL SYSTEM ─────────────────────────────────────────────────
+      // scrollTarget  (0→1): caps at Projects section top
+      //   → drives uS (sun arc): sun rises from Home, sets at Projects
+      // fullTarget    (0→1): maps to full page height
+      //   → drives uSc/uBl (scene index): night/storm start in Showcase
 
-      setHudPct(String(Math.round(smoothScroll * 100)).padStart(3, "0") + "%");
-      setProgWidth(smoothScroll * 100);
-      setHudScene(si);
+      const projectsEl = document.getElementById('projects');
+      const maxScrollFull = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+
+      // Sun arc target: 0 at top, 1 when Projects scrolls into view
+      let scrollTarget;
+      if (projectsEl) {
+        const projectsTop = projectsEl.getBoundingClientRect().top;
+        const projectsHeight = projectsEl.offsetHeight;
+        
+        // When Projects section is at the top of viewport, sun should be at sunset position (1.0)
+        // When Projects section is completely above viewport, sun should be at sunrise position (0.0)
+        if (projectsTop <= 0) {
+          // Projects section is at or above viewport, sun should be at sunset  
+          scrollTarget = 1.0;
+        } else if (projectsTop >= window.innerHeight) {
+          // Projects section is completely below viewport, sun should be at sunrise
+          scrollTarget = 0.0;
+        } else {
+          // Projects section is partially visible in viewport
+          // Calculate the exact scroll position where Projects section reaches top of viewport
+          const projectsOffset = projectsEl.offsetTop;
+          const transitionStart = projectsOffset - window.innerHeight; // When projects enters viewport
+          const transitionEnd = projectsOffset; // When projects reaches top of viewport
+          
+          // Normalize scroll position to 0-1 range where 1 is when Projects section is at top
+          scrollTarget = Math.min(1, Math.max(0, (window.scrollY - transitionStart) / (transitionEnd - transitionStart)));
+        }
+      } else {
+        scrollTarget = Math.min(1, Math.max(0, window.scrollY / maxScrollFull));
+      }
+
+      // Full-page target: 0 at top, 1 at absolute bottom (for scene/night)
+      const fullTarget = Math.min(1, Math.max(0, window.scrollY / maxScrollFull));
+
+      // Direction-aware lerp for sun arc
+      const isReversing = scrollTarget < smoothScroll;
+      const lerpFactor  = isReversing ? 0.080 : 0.040;
+      smoothScroll      += (scrollTarget - smoothScroll) * lerpFactor;
+
+      // Direction-aware lerp for full-page (scene index)
+      const isReversingFull = fullTarget < smoothScrollFull;
+      const lerpFull        = isReversingFull ? 0.080 : 0.040;
+      smoothScrollFull      += (fullTarget - smoothScrollFull) * lerpFull;
+
+      // Scene index from full-page scroll
+      const raw = smoothScrollFull * (N - 1);
+      const si  = Math.min(Math.floor(raw), N - 2);
+      const bl  = raw - si;
+
+      const pctStr = String(Math.round(smoothScroll * 100)).padStart(3, "0") + "%";
+      const wStr = `${smoothScroll * 100}%`;
+      const sceneStr = NAMES[si];
+
+      if (hudPctRef.current && hudPctRef.current.innerText !== pctStr) {
+        hudPctRef.current.innerText = pctStr;
+      }
+      if (progFillRef.current) {
+        progFillRef.current.style.width = wStr;
+      }
+      if (sceneLabelRef.current && sceneLabelRef.current.innerText !== sceneStr) {
+        sceneLabelRef.current.innerText = sceneStr;
+      }
+
+      sceneDotsRef.current.forEach((dot, index) => {
+        if (!dot) return;
+        if (index === si) {
+          if (!dot.classList.contains('active')) dot.classList.add('active');
+        } else {
+          if (dot.classList.contains('active')) dot.classList.remove('active');
+        }
+      });
 
       gl.uniform1f(uTi, time);
       gl.uniform1f(uScroll, smoothScroll);
@@ -354,11 +423,11 @@ const OceanBackground = () => {
       
       {/* HUD Layer */}
       <div id="hud">
-        <div id="hud_pct">{hudPct}</div>
+        <div id="hud_pct" ref={hudPctRef}>000%</div>
         <div className="progress-bar">
-          <div className="progress-fill" style={{ width: `${progWidth}%` }}></div>
+          <div className="progress-fill" ref={progFillRef} style={{ width: '0%' }}></div>
         </div>
-        <div className="scene-label">{NAMES[hudScene]}</div>
+        <div className="scene-label" ref={sceneLabelRef}>{NAMES[0]}</div>
       </div>
 
       <button id="theme_toggle" onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')} aria-label="Toggle themes">
@@ -367,7 +436,11 @@ const OceanBackground = () => {
 
       <div id="scene_strip">
         {NAMES.map((name, i) => (
-          <div key={i} className={`scene-dot ${i === hudScene ? 'active' : ''}`}></div>
+          <div 
+            key={i} 
+            ref={el => sceneDotsRef.current[i] = el}
+            className={`scene-dot ${i === 0 ? 'active' : ''}`}
+          ></div>
         ))}
       </div>
     </>

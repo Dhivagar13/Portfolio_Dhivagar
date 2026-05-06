@@ -121,7 +121,7 @@ const GlitchyNavigation = ({ onNavigate }) => {
         <i className="icon pink"><MdSchool /></i>
         <i className="icon blue"><MdSchool /></i>
         <i className="icon"><MdSchool /></i>
-        <span className="label">About</span>
+        <span className="label">Profile</span>
       </a>
 
       <a href="#contact" title="Contact">
