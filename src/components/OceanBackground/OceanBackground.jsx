@@ -331,29 +331,14 @@ const OceanBackground = () => {
       const projectsEl = document.getElementById('projects');
       const maxScrollFull = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 
-      // Sun arc target: 0 at top, 1 when Projects scrolls into view
+      // Sun arc target: 0 at top (Home), 1 when Projects hits the top of the viewport
       let scrollTarget;
       if (projectsEl) {
-        const projectsTop = projectsEl.getBoundingClientRect().top;
-        const projectsHeight = projectsEl.offsetHeight;
-        
-        // When Projects section is at the top of viewport, sun should be at sunset position (1.0)
-        // When Projects section is completely above viewport, sun should be at sunrise position (0.0)
-        if (projectsTop <= 0) {
-          // Projects section is at or above viewport, sun should be at sunset  
-          scrollTarget = 1.0;
-        } else if (projectsTop >= window.innerHeight) {
-          // Projects section is completely below viewport, sun should be at sunrise
-          scrollTarget = 0.0;
+        const projectsOffset = projectsEl.offsetTop;
+        if (projectsOffset > 0) {
+          scrollTarget = Math.min(1, Math.max(0, window.scrollY / projectsOffset));
         } else {
-          // Projects section is partially visible in viewport
-          // Calculate the exact scroll position where Projects section reaches top of viewport
-          const projectsOffset = projectsEl.offsetTop;
-          const transitionStart = projectsOffset - window.innerHeight; // When projects enters viewport
-          const transitionEnd = projectsOffset; // When projects reaches top of viewport
-          
-          // Normalize scroll position to 0-1 range where 1 is when Projects section is at top
-          scrollTarget = Math.min(1, Math.max(0, (window.scrollY - transitionStart) / (transitionEnd - transitionStart)));
+          scrollTarget = Math.min(1, Math.max(0, window.scrollY / maxScrollFull));
         }
       } else {
         scrollTarget = Math.min(1, Math.max(0, window.scrollY / maxScrollFull));
