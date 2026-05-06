@@ -1,4 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&family=Poppins:wght@300;400;500;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 rounded-xl;
+  }
+  .text-outline {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+    color: transparent;
+  }
+  .animate-loading {
+    animation: loading-slide 2s infinite ease-in-out;
+  }
+  .bento-mask {
+    background-image: radial-gradient(circle at center, transparent 30%, #000 100%);
+  }
+}
+
+@keyframes loading-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes gooey-marquee {
+  from { transform: translateX(70%); }
+  to { transform: translateX(-70%); }
+}
+
 
 :root {
   --background: #09090b; /* hsl(240 15% 4%) */

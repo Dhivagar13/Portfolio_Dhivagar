@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { GooeyMarquee } from '../ui/gooey-marquee';
 import './Home.css';
 import profileImage from '../../../assests/dhiv.png';
 
@@ -89,7 +90,9 @@ const Home = () => {
         style={{ transform: `translateY(${parallaxY}px)` }}
       >
         {/* Background stroke name – deepest layer */}
-        <div className="hero-name-bg">DHIVAGAR B</div>
+        <div className="hero-name-bg font-black uppercase tracking-tighter leading-[0.87]">
+          DHIVAGAR <span className="text-outline">B</span>
+        </div>
 
         {/* Portrait */}
         <div className="hero-image-wrapper">
@@ -97,18 +100,18 @@ const Home = () => {
         </div>
 
         {/* Subtitle – foreground layer */}
-        <div className="hero-subtitle-fg">FULL STACK ENGINEER</div>
+        <div className="hero-subtitle-fg font-mono uppercase tracking-[0.35em] text-white/40">
+          FULL STACK ENGINEER
+        </div>
       </div>
 
       {/* Full-width marquee plane – touches both edges */}
       <div className="hero-marquee-container" aria-hidden="true">
-        <div className="hero-marquee-track">
-          {Array(6).fill(0).map((_, i) => (
-            <span className="hero-marquee-content" key={i}>
-              DHIVAGAR B&nbsp;✦&nbsp;FULL STACK ENGINEER&nbsp;✦&nbsp;CREATIVE TECHNOLOGIST&nbsp;✦&nbsp;SYSTEM ARCHITECT&nbsp;✦&nbsp;CODE INNOVATOR&nbsp;✦&nbsp;SOLUTION BUILDER&nbsp;✦&nbsp;
-            </span>
-          ))}
-        </div>
+        <GooeyMarquee 
+          text="DHIVAGAR B ✦ FULL STACK ENGINEER ✦ CREATIVE TECHNOLOGIST ✦ SYSTEM ARCHITECT ✦ CODE INNOVATOR ✦ SOLUTION BUILDER ✦ DHIVAGAR B ✦ FULL STACK ENGINEER ✦ CREATIVE TECHNOLOGIST ✦ SYSTEM ARCHITECT ✦ CODE INNOVATOR ✦ SOLUTION BUILDER ✦ " 
+          speed={36} 
+          className="font-mono uppercase tracking-[0.22em] !text-[0.82rem] !h-auto !text-white/90"
+        />
       </div>
     </section>
   );

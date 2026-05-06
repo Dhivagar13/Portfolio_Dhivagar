@@ -182,12 +182,15 @@ const OceanBackground = () => {
       vec3 fogCol = sCol(vec3(0.80, 0.50, 0.30), vec3(0.58, 0.72, 0.90), vec3(0.70, 0.28, 0.05), vec3(0.02, 0.03, 0.08), vec3(0.12, 0.14, 0.18));
 
       // Sun arc: s goes 0 (Home) → 1 (Projects top)
-      // Multiply by 0.90 so at s=1 the sun is at sunAngle=162° (barely touching
-      // horizon = golden hour). At s=0 it starts below horizon = pre-dawn.
       float sunProgress = clamp(s * 0.90, 0.0, 1.0);
       float sunAngle = sunProgress * PI;
-      vec3 sunDir = normalize(vec3(cos(sunAngle) * -0.75, sin(sunAngle) * 0.38 - 0.08, -1.0));
-      vec3 moonDir = normalize(vec3(-0.14, 0.42, -1.0));
+      
+      // Calculate aspect ratio to ensure sun stays within screen bounds on mobile
+      float ar = uR.x / uR.y;
+      float sunX = cos(sunAngle) * -(ar * 0.42);
+      
+      vec3 sunDir = normalize(vec3(sunX, sin(sunAngle) * 0.38 - 0.08, -1.0));
+      vec3 moonDir = normalize(vec3(-ar * 0.1, 0.42, -1.0));
 
       float waveAmp = sF(0.082, 0.070, 0.100, 0.054, 0.30) + storm * 0.020;
       float fogDen = sF(0.020, 0.010, 0.022, 0.034, 0.046);
