@@ -29,6 +29,21 @@ const profileHighlights = [
   { label: 'Focus', value: 'React, FastAPI, Spring Boot, AI' },
 ];
 
+const projectReplies = [
+  {
+    keywords: ['vita5', 'vita 5', 'sos app', 'sos application', 'mobile safety'],
+    reply: 'Vita5 is a mobile safety SOS app. It sends instant alerts, shares live GPS location, and notifies trusted contacts during emergencies. Tech: React Native, Node.js, Express, MongoDB, Socket.io, Google Maps API.'
+  },
+  {
+    keywords: ['agridetect', 'agri detect', 'agriconnect', 'agri connect', 'agritech', 'farmer'],
+    reply: 'AgriDetect is a digital agriculture platform. It supports livestock tracking, marketplace features, expert consultation, weather updates, and crop advisory. Tech: React, Spring Boot, Java, PostgreSQL.'
+  },
+  {
+    keywords: ['smart mentis', 'career chatbot', 'career guidance', 'career assistant'],
+    reply: 'Smart Mentis is an AI career guidance app. It gives career suggestions, aptitude tests, YouTube learning resources, progress tracking, and skill roadmaps. Tech: React.js, FastAPI, Gemini API, Firebase.'
+  }
+];
+
 const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL || 'http://localhost:8000/chat';
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -159,6 +174,14 @@ function getAssistantReply(message) {
     const sentences = text.match(/[^.!?]+[.!?]?/g) || [text];
     return sentences.slice(0, 2).join(' ').trim();
   };
+
+  const projectMatch = projectReplies.find(project =>
+    project.keywords.some(keyword => normalized.includes(keyword))
+  );
+
+  if (projectMatch) {
+    return projectMatch.reply;
+  }
 
   const categories = [
     {

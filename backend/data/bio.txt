@@ -37,7 +37,25 @@ Concepts: Object-Oriented Programming, Data Structures (Intermediate), API Archi
 
 ===== PROJECTS =====
 
-1. Career Chatbot (AI-Based Career Assistant)
+1. Vita5 (SOS Application)
+   Overview: A mobile safety app designed for immediate emergency response and coordinate sharing.
+   Key Features:
+   - Real-time GPS location sharing
+   - One-tap instant SOS alerts
+   - Trusted contacts notification system
+   - Background location tracking during emergency
+   Tech Stack: React Native, Node.js, Express, MongoDB, Socket.io, Google Maps API
+
+2. AgriDetect (Digital Agriculture Platform)
+   Overview: An integrated farmer support platform streamlining agricultural operations and commerce.
+   Key Features:
+   - Livestock health and management tracker
+   - Direct peer-to-peer agriculture marketplace
+   - Expert consultation and diagnostic module
+   - Weather integration and crop advisory
+   Tech Stack: React, Spring Boot, Java, PostgreSQL, RESTful APIs, Hibernate
+
+3. Smart Mentis / Career Chatbot (AI-Based Career Assistant)
    Overview: A full-stack AI-powered application designed to help users choose career paths, improve skills, and access learning resources.
    Key Features:
    - AI chatbot for personalized career guidance
