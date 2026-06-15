@@ -17,6 +17,8 @@
   font-family: inherit;
   position: relative;  
   z-index: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ─── Spacers ─── */
@@ -180,6 +182,40 @@
   margin-top: 0.2rem;
 }
 
+/* ─── Two-column layout for rows + terminal ─── */
+#about .about-columns {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: flex-start;
+  margin-top: auto;
+}
+
+#about .about-rows-col {
+  flex: 1;
+  min-width: 0;
+}
+
+#about .about-terminal-col {
+  flex: 0 0 auto;
+  max-width: 380px;
+  position: sticky;
+  top: 10vh;
+}
+
+@media (max-width: 768px) {
+  #about .about-columns {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  #about .about-terminal-col {
+    max-width: 100%;
+    width: 100%;
+    position: static;
+  }
+}
+
 /* ─── Magnetic Text ─── */
 /*
  * .magnetic-text is a <span> rendered INSIDE .fill.
@@ -209,9 +245,44 @@
 }
 
 /* ─── Mobile ─── */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   #about {
     padding-block: 4vh 6vh;
+    width: min(900px, 95vw);
+  }
+
+  #about .row {
+    font-size: clamp(0.75rem, 2vw, 1.2rem);
+    min-height: clamp(42px, 6vh, 60px);
+  }
+
+  #about .fill {
+    font-size: clamp(11px, 2.2vw, 22px);
+    gap: 0.4rem;
+  }
+
+  #about .row-tag {
+    font-size: 0.45rem;
+  }
+}
+
+@media (max-width: 600px) {
+  #about {
+    padding-block: 3vh 5vh;
+  }
+
+  #about .row {
+    font-size: clamp(0.65rem, 2vw, 1rem);
+    min-height: clamp(36px, 5vh, 50px);
+  }
+
+  #about .fill {
+    font-size: clamp(10px, 2vw, 18px);
+    gap: 0.3rem;
+  }
+
+  #about .row-tag {
+    display: none;
   }
 
   #about .stats-grid {

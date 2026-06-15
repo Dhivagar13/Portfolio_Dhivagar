@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Lenis from 'lenis';
 import './App.css';
 
 // Import Components
@@ -19,6 +20,32 @@ import ChatbotWidget from './components/ChatbotWidget/ChatbotWidget';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const lenisRef = useRef(null);
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.0,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      smoothTouch: true,
+      touchMultiplier: 1.5,
+    });
+
+    lenisRef.current = lenis;
+    window.lenis = lenis;
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   return (
     <MagneticCursor
@@ -28,7 +55,7 @@ function App() {
     >
       <div className="App">
         {loading && <KineticDotsLoader onFinish={() => setLoading(false)} />}
-        <OceanBackground />
+        <OceanBackground lenis={lenisRef} />
         <Header />
         <main>
           <Home />

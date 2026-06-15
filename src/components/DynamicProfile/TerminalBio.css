@@ -1,0 +1,155 @@
+.terminal-bio {
+  width: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(6, 10, 20, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.15);
+  box-shadow: 0 0 30px rgba(0, 240, 255, 0.05), inset 0 0 30px rgba(0, 240, 255, 0.02);
+  backdrop-filter: blur(8px);
+  font-family: 'JetBrains Mono', 'Space Grotesk', monospace;
+}
+
+.terminal-bio-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.terminal-bio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.terminal-bio-title {
+  margin-left: 10px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.35);
+  flex: 1;
+}
+
+.terminal-bio-progress {
+  width: 60px;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.terminal-bio-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #00f0ff, #00ff99);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.terminal-bio-body {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
+  align-items: flex-start;
+  min-height: 180px;
+}
+
+.terminal-bio-canvas {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: rgba(0, 240, 255, 0.02);
+  border: 1px solid rgba(0, 240, 255, 0.06);
+}
+
+.terminal-bio-lines {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.65rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.terminal-bio-line {
+  opacity: 0;
+  animation: terminal-fade-in 0.3s ease forwards;
+}
+
+@keyframes terminal-fade-in {
+  to { opacity: 1; }
+}
+
+.terminal-bio-prompt {
+  color: #00ff99;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.terminal-bio-output {
+  color: rgba(255, 255, 255, 0.6);
+  word-break: break-word;
+}
+
+.terminal-bio-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 14px;
+  background: #00f0ff;
+  animation: cursor-blink 0.8s step-end infinite;
+}
+
+.terminal-bio-cursor-blink {
+  color: #00f0ff;
+  animation: cursor-blink 0.8s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.terminal-bio-done {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 768px) {
+  .terminal-bio-body {
+    flex-direction: row;
+    padding: 0.9rem 1rem;
+  }
+
+  .terminal-bio-canvas {
+    width: 80px;
+    height: 80px;
+  }
+
+  .terminal-bio-lines {
+    font-size: 0.68rem;
+    width: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .terminal-bio-body {
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem;
+  }
+
+  .terminal-bio-canvas {
+    width: 60px;
+    height: 60px;
+  }
+
+  .terminal-bio-lines {
+    font-size: 0.6rem;
+    width: 100%;
+  }
+}

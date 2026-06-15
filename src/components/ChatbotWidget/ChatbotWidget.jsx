@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { motion, AnimatePresence, MotionConfig } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import * as Motion from 'framer-motion/client';
+import { AnimatePresence, MotionConfig } from 'framer-motion';
 import bioText from '../../../backend/data/bio.txt?raw';
 import './ChatbotWidget.css';
 
@@ -27,6 +28,8 @@ const profileHighlights = [
   { label: 'Location', value: 'Tamil Nadu, India' },
   { label: 'Focus', value: 'React, FastAPI, Spring Boot, AI' },
 ];
+
+const CHAT_API_URL = import.meta.env.VITE_CHAT_API_URL || 'http://localhost:8000/chat';
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
@@ -167,6 +170,25 @@ function getAssistantReply(message) {
   return "I don't have that information.";
 }
 
+async function getBackendReply(message) {
+  const response = await fetch(CHAT_API_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Chat API failed with ${response.status}`);
+  }
+
+  const data = await response.json();
+  if (!data.answer) {
+    throw new Error('Chat API returned no answer');
+  }
+
+  return data.answer;
+}
+
 function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
@@ -175,9 +197,9 @@ function ChatbotWidget() {
   
   const [inputValue, setInputValue] = useState('');
   const [messages, setMessages] = useState(starterMessages);
+  const [isReplying, setIsReplying] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-  const replyTimeoutRef = useRef(null);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -192,17 +214,23 @@ function ChatbotWidget() {
     }
   }, [messages, isOpen, activeTab]);
 
-  const sendMessage = (text) => {
+  const sendMessage = async (text) => {
     const trimmed = text.trim();
-    if (!trimmed) return;
+    if (!trimmed || isReplying) return;
     
     setMessages(prev => [...prev, { id: `${Date.now()}-user`, role: 'user', text: trimmed }]);
     setInputValue('');
-    
-    if (replyTimeoutRef.current) window.clearTimeout(replyTimeoutRef.current);
-    replyTimeoutRef.current = window.setTimeout(() => {
+    setIsReplying(true);
+
+    try {
+      const answer = await getBackendReply(trimmed);
+      setMessages(prev => [...prev, { id: `${Date.now()}-assistant`, role: 'assistant', text: answer }]);
+    } catch (error) {
+      console.error(error);
       setMessages(prev => [...prev, { id: `${Date.now()}-assistant`, role: 'assistant', text: getAssistantReply(trimmed) }]);
-    }, 400);
+    } finally {
+      setIsReplying(false);
+    }
   };
 
   const handleTabClick = (newTabId) => {
@@ -212,7 +240,7 @@ function ChatbotWidget() {
     }
   };
 
-  const content = useMemo(() => {
+  const content = (() => {
     if (activeTab === 0) {
       return (
         <div className="cb-chat-view">
@@ -233,8 +261,9 @@ function ChatbotWidget() {
               value={inputValue}
               onChange={e => setInputValue(e.target.value)}
               placeholder="Ask anything..."
+              disabled={isReplying}
             />
-            <button type="submit">↑</button>
+            <button type="submit" disabled={isReplying}>{isReplying ? '...' : '↑'}</button>
           </form>
         </div>
       );
@@ -252,7 +281,7 @@ function ChatbotWidget() {
         </div>
       );
     }
-  }, [activeTab, messages, inputValue]);
+  })();
 
   const variants = {
     initial: (dir) => ({ x: 100 * dir, opacity: 0, filter: 'blur(4px)' }),
@@ -263,14 +292,14 @@ function ChatbotWidget() {
   return (
     <div className="cb-fixed-wrapper">
       <MotionConfig transition={{ duration: 0.5, type: 'spring', bounce: 0.25 }}>
-        <motion.div
+        <Motion.div
           layout
           className="cb-morph-container"
           style={{ borderRadius: 24 }}
         >
           <AnimatePresence mode="popLayout" initial={false}>
             {!isOpen ? (
-              <motion.button
+              <Motion.button
                 key="launcher"
                 layoutId="cb-morph"
                 initial={{ opacity: 0 }}
@@ -282,9 +311,9 @@ function ChatbotWidget() {
                 <div className="cb-launcher-inner">
                   <span className="cb-launcher-icon">+</span>
                 </div>
-              </motion.button>
+              </Motion.button>
             ) : (
-              <motion.div
+              <Motion.div
                 key="panel"
                 layoutId="cb-morph"
                 initial={{ opacity: 0 }}
@@ -303,7 +332,7 @@ function ChatbotWidget() {
                           className={`cb-tab ${activeTab === tab.id ? 'cb-tab-active' : ''}`}
                         >
                           {activeTab === tab.id && (
-                            <motion.span
+                            <Motion.span
                               layoutId="cb-tab-bubble"
                               className="cb-tab-bubble"
                               transition={{ type: "spring", bounce: 0.19, duration: 0.4 }}
@@ -317,7 +346,7 @@ function ChatbotWidget() {
                 </div>
 
                 {/* Animated Body */}
-                <motion.div
+                <Motion.div
                   className="cb-body-animator"
                   layout
                   transition={{
@@ -332,7 +361,7 @@ function ChatbotWidget() {
                       mode="wait"
                       onExitComplete={() => setIsAnimating(false)}
                     >
-                      <motion.div
+                      <Motion.div
                         key={activeTab}
                         variants={variants}
                         initial="initial"
@@ -344,19 +373,19 @@ function ChatbotWidget() {
                         className="cb-view-wrapper"
                       >
                         {content}
-                      </motion.div>
+                      </Motion.div>
                     </AnimatePresence>
                   </div>
-                </motion.div>
+                </Motion.div>
 
                 {/* Footer with Close Button (positioned exactly where Open Button was) */}
                 <div className="cb-footer">
                   <button className="cb-close-btn" onClick={() => setIsOpen(false)}>×</button>
                 </div>
-              </motion.div>
+              </Motion.div>
             )}
           </AnimatePresence>
-        </motion.div>
+        </Motion.div>
       </MotionConfig>
     </div>
   );

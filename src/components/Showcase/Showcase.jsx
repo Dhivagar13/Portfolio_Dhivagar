@@ -55,35 +55,22 @@ const projectData = [
 
 const BIG_TEXTS = ['JAVA', 'PYTHON', 'REACT', 'AI', 'PROJECTS', 'SYSTEM', 'FUTURE', 'DESIGN', 'CODE'];
 
-/* Directional entry variants */
-const ENTRY_DIRS = ['left', 'right', 'bottom'];
-
 const CONFIG = {
   itemCount: 24,
-  starCount: 120,
-  zGap: 800,
+  starCount: 200,
+  zGap: 1000,
   camSpeed: 4.0,
 };
 CONFIG.loopSize = CONFIG.itemCount * CONFIG.zGap;
-
-/* ── Entry offset by direction ── */
-const getEntryOffset = (dir) => {
-  switch (dir) {
-    case 'left':   return { ox: -window.innerWidth * 0.6, oy: 0,    oz: -1200 };
-    case 'right':  return { ox:  window.innerWidth * 0.6, oy: 0,    oz: -1200 };
-    case 'bottom': return { ox: 0, oy:  window.innerHeight * 0.5,   oz: -1800 };
-    default:       return { ox: 0, oy: 0, oz: -1200 };
-  }
-};
 
 const Showcase = () => {
   const showcaseRef  = useRef(null);
   const worldRef     = useRef(null);
   const viewportRef  = useRef(null);
 
-  const [fps, setFps]             = useState(60);
-  const [velocityStr, setVelocityStr] = useState('0.00');
-  const [coordStr, setCoordStr]   = useState('000');
+  const fpsRef = useRef(null);
+  const velRef = useRef(null);
+  const coordRef = useRef(null);
 
   useEffect(() => {
     if (!showcaseRef.current) return;
@@ -94,8 +81,11 @@ const Showcase = () => {
     world.innerHTML = '';
 
     const items = [];
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const tunnelRadius = Math.min(w, h) * 0.28;
 
-    /* ── Build scene items ── */
+    /* ── Build scene items — all approach from deep Z space ── */
     for (let i = 0; i < CONFIG.itemCount; i++) {
       const el = document.createElement('div');
       el.className = 'hyper-item';
@@ -112,17 +102,13 @@ const Showcase = () => {
         items.push({
           el,
           type: 'text',
-          x: (Math.random() - 0.5) * window.innerWidth * 0.4,
-          y: (Math.random() - 0.5) * window.innerHeight * 0.25,
+          x: (Math.random() - 0.5) * w * 0.5,
+          y: (Math.random() - 0.5) * h * 0.3,
           rot: (Math.random() - 0.5) * 18,
-          baseZ: -i * CONFIG.zGap,
-          dir: null,
-          entryDone: true,   // text has no staged entry
-          curX: 0, curY: 0,
+          baseZ: -i * CONFIG.zGap - Math.random() * CONFIG.zGap * 0.4,
         });
       } else {
-        /* Card ── assign a directional entry */
-        const dir  = ENTRY_DIRS[i % ENTRY_DIRS.length];
+        /* Card */
         const data = projectData[i % projectData.length];
 
         const card = document.createElement('div');
@@ -150,34 +136,25 @@ const Showcase = () => {
         `;
         el.appendChild(card);
 
-        /* Spiral destination position */
-        const angle   = (i / CONFIG.itemCount) * Math.PI * 8;
-        const destX   = Math.cos(angle) * (window.innerWidth  * 0.32);
-        const destY   = Math.sin(angle) * (window.innerHeight * 0.28);
-        const rot     = (Math.random() - 0.5) * 28;
-
-        /* Start off-screen in the entry direction */
-        const { ox, oy } = getEntryOffset(dir);
+        /* Tunnel spiral — items orbit as they approach from deep space */
+        const angle = (i / CONFIG.itemCount) * Math.PI * 10 + Math.random() * 0.5;
+        const r = tunnelRadius * (0.6 + 0.4 * (i / CONFIG.itemCount));
+        const rot = (Math.random() - 0.5) * 20;
 
         items.push({
           el,
           type: 'card',
-          dir,
-          destX, destY,
+          x: Math.cos(angle) * r,
+          y: Math.sin(angle) * r * 0.65,
           rot,
-          baseZ: -i * CONFIG.zGap,
-          /* animated current position */
-          curX: destX + ox,
-          curY: destY + oy,
-          entryDone: false,
-          entryProgress: 0,   // 0 → 1
+          baseZ: -i * CONFIG.zGap - Math.random() * CONFIG.zGap * 0.3,
         });
       }
 
       world.appendChild(el);
     }
 
-    /* ── Stars ── */
+    /* ── Stars — dense field for deep-space feel ── */
     for (let i = 0; i < CONFIG.starCount; i++) {
       const el = document.createElement('div');
       el.className = 'hyper-star';
@@ -185,11 +162,10 @@ const Showcase = () => {
       items.push({
         el,
         type: 'star',
-        x: (Math.random() - 0.5) * 3000,
-        y: (Math.random() - 0.5) * 3000,
-        baseZ: -Math.random() * CONFIG.loopSize,
-        curX: 0, curY: 0,
-        entryDone: true,
+        x: (Math.random() - 0.5) * 5000,
+        y: (Math.random() - 0.5) * 5000,
+        size: 1 + Math.random() * 2,
+        baseZ: -(Math.random() * CONFIG.loopSize * 1.5),
       });
     }
 
@@ -212,17 +188,14 @@ const Showcase = () => {
     let animId;
     let isMounted     = true;
 
-    /* ── Ease function for entry animations ── */
-    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
-
-    /* ── Render loop ── */
+    /* ── Render loop — items approach from deep Z space ── */
     const renderLoop = (time) => {
       if (!isMounted || !showcaseRef.current) return;
 
       const delta = time - lastTime;
       lastTime = time;
 
-      if (time % 12 < 1) setFps(Math.round(1000 / (delta || 1)));
+      if (time % 12 < 1 && fpsRef.current) fpsRef.current.innerText = String(Math.round(1000 / (delta || 1)));
 
       /* Scroll → camera Z */
       const rect        = showcaseRef.current.getBoundingClientRect();
@@ -239,31 +212,37 @@ const Showcase = () => {
         localScroll = totalScrollable;
       }
 
-      const currentScrollY = window.scrollY;
-      const scrollDelta    = currentScrollY - lastScrollY;
-      lastScrollY = currentScrollY;
+      // Use Lenis velocity if available for smoother scroll detection
+      let scrollDelta;
+      if (window.lenis) {
+        scrollDelta = window.lenis.velocity * 0.5;
+      } else {
+        const currentScrollY = window.scrollY;
+        scrollDelta = currentScrollY - lastScrollY;
+        lastScrollY = currentScrollY;
+      }
 
       state.targetSpeed  = active ? scrollDelta : 0;
-      state.velocity    += (state.targetSpeed - state.velocity) * 0.1;
+      state.velocity    += (state.targetSpeed - state.velocity) * 0.08;
 
-      setVelocityStr(Math.abs(state.velocity).toFixed(2));
-      setCoordStr(localScroll.toFixed(0));
+      if (velRef.current) velRef.current.innerText = Math.abs(state.velocity).toFixed(2);
+      if (coordRef.current) coordRef.current.innerText = localScroll.toFixed(0);
 
-      /* Camera tilt */
+      /* Camera tilt (mouse + speed) */
       const tiltX = state.mouseY * 5 - state.velocity * 0.1;
       const tiltY = state.mouseX * 5;
-
       if (worldRef.current) {
         worldRef.current.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
       }
 
-      /* Dynamic FOV */
+      /* Dynamic FOV — tighter at speed for warp feel */
       const fov = 1000 - Math.min(Math.abs(state.velocity) * 5, 400);
       if (viewportRef.current) {
         viewportRef.current.style.perspective = `${fov}px`;
       }
 
       const cameraZ = localScroll * CONFIG.camSpeed;
+      const now = time * 0.001;
 
       /* ── Per-item update ── */
       items.forEach((item, idx) => {
@@ -272,58 +251,51 @@ const Showcase = () => {
         let vizZ   = ((relZ % modC) + modC) % modC;
         if (vizZ > 500) vizZ -= modC;
 
-        /* Visibility */
+        /* ── Depth scale: items grow as they approach from deep space ── */
+        // vizZ goes from -loopSize/2 (~ -12000) to +500
+        // Map to approach factor: 0 = far behind, 1 = at camera plane
+        const approach = Math.max(0, Math.min(1, (vizZ + 3500) / 3000));
+        const depthScale = approach;  // 0 → 1 as item approaches camera
+
+        /* ── Visibility: fade in from deep space, fade out past camera ── */
         let alpha = 1;
-        if (vizZ < -3000) alpha = 0;
-        else if (vizZ < -2000) alpha = (vizZ + 3000) / 1000;
-        if (vizZ > 100 && item.type !== 'star') alpha = 1 - ((vizZ - 100) / 400);
+        if (vizZ < -3500) alpha = 0;
+        else if (vizZ < -2000) alpha = (vizZ + 3500) / 1500;
+        if (vizZ > 80) alpha = Math.max(0, 1 - (vizZ - 80) / 300);
         if (alpha < 0) alpha = 0;
 
-        item.el.style.opacity = alpha;
+        item.el.style.opacity = alpha * alpha;  // square for smoother fade
 
-        if (alpha <= 0) return;
-
-        /* ── Directional entry for cards ── */
-        if (item.type === 'card' && !item.entryDone) {
-          // Trigger entry animation when the card becomes visible (vizZ in [-2000, 0])
-          if (vizZ > -2000 && vizZ < 0) {
-            item.entryProgress = Math.min(item.entryProgress + 0.018, 1);
-            if (item.entryProgress >= 1) item.entryDone = true;
-          }
-
-          const t     = easeOutCubic(item.entryProgress);
-          const { ox, oy } = getEntryOffset(item.dir);
-
-          // Interpolate from off-screen entry position to dest
-          item.curX = item.destX + ox * (1 - t);
-          item.curY = item.destY + oy * (1 - t);
-        } else if (item.type === 'card') {
-          item.curX = item.destX;
-          item.curY = item.destY;
-        }
+        if (alpha <= 0.01 || vizZ > 350) return;
 
         /* ── Transform per type ── */
         if (item.type === 'star') {
-          const stretch = Math.max(1, Math.min(1 + Math.abs(state.velocity) * 0.12, 12));
-          item.el.style.transform = `translate3d(${item.x}px, ${item.y}px, ${vizZ}px) scale3d(1, 1, ${stretch})`;
-
-        } else if (item.type === 'text') {
-          const offset = state.velocity * 1.5;
-          if (Math.abs(state.velocity) > 1) {
-            item.el.style.textShadow = `${offset}px 0 rgba(255,0,60,0.8), ${-offset}px 0 rgba(0,243,255,0.8)`;
-          } else {
-            item.el.style.textShadow = 'none';
-          }
-          item.el.style.transform = `translate3d(${item.x}px, ${item.y}px, ${vizZ}px) rotateZ(${item.rot}deg)`;
-
-        } else {
-          /* Card: floating bob + directional entry */
-          const t       = time * 0.001;
-          const floatY  = Math.sin(t * 0.8 + idx) * 8;
-          const floatRot = Math.cos(t * 0.5 + idx) * 1.5;
+          // Stars streak more at higher velocity (warp effect)
+          const streak = Math.max(1, Math.min(1 + Math.abs(state.velocity) * 0.15, 20));
           item.el.style.transform = `
-            translate3d(${item.curX}px, ${item.curY + floatY}px, ${vizZ}px)
+            translate3d(${item.x}px, ${item.y}px, ${vizZ}px)
+            scale3d(1, 1, ${streak})
+          `;
+        } else if (item.type === 'text') {
+          // Text emerges from deep space — slight 3D rotation settles as it approaches
+          const rotSettle = (1 - approach) * 20;
+          item.el.style.transform = `
+            translate3d(${item.x}px, ${item.y}px, ${vizZ}px)
+            rotateX(${rotSettle * (Math.random() > 0.5 ? 1 : -1)}deg)
+            rotateY(${rotSettle * (Math.random() > 0.5 ? 1 : -1)}deg)
+            rotateZ(${item.rot}deg)
+            scale(${depthScale})
+          `;
+        } else {
+          /* Card: floats gently while approaching from deep space */
+          const floatY  = Math.sin(now * 0.8 + idx) * 6 * depthScale;
+          const floatRot = Math.cos(now * 0.5 + idx) * 1.2 * depthScale;
+          // Cards scale up as they approach
+          const cardScale = 0.3 + 0.7 * depthScale;
+          item.el.style.transform = `
+            translate3d(${item.x}px, ${item.y + floatY}px, ${vizZ}px)
             rotateZ(${item.rot + floatRot}deg)
+            scale(${cardScale})
           `;
         }
       });
@@ -354,7 +326,7 @@ const Showcase = () => {
           <div className="hyper-hud-top">
             <span>SYS.READY // ACHIEVEMENTS</span>
             <div className="hyper-hud-line" />
-            <span>FPS: <strong>{fps}</strong></span>
+            <span>FPS: <strong ref={fpsRef}>60</strong></span>
           </div>
 
           <div
@@ -370,11 +342,11 @@ const Showcase = () => {
               color: 'rgba(255,255,255,0.4)',
             }}
           >
-            VELOCITY // <strong>{velocityStr}</strong>
+            VELOCITY // <strong ref={velRef}>0.00</strong>
           </div>
 
           <div className="hyper-hud-bottom">
-            <span>COORD: <strong>{coordStr}</strong></span>
+            <span>COORD: <strong ref={coordRef}>000</strong></span>
             <div className="hyper-hud-line" />
             <span>VER 2.1.0 [MOTION]</span>
           </div>

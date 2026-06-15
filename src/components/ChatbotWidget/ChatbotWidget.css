@@ -1,4 +1,7 @@
 .cb-fixed-wrapper {
+  --cb-accent: #ff8a00;
+  --cb-accent-hover: #ff6a00;
+  --cb-accent-soft: rgba(255, 138, 0, 0.18);
   position: fixed;
   bottom: 2.3rem;
   right: 2.3rem;  
@@ -110,16 +113,16 @@
 }
 
 .cb-tab-active {
-  color: #ffffff;
+  color: #111111;
 }
 
 .cb-tab-bubble {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.15); /* Active pill color */
+  background: var(--cb-accent);
   border-radius: 8px;
   z-index: -1;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.28), 0 0 18px rgba(255, 138, 0, 0.35);
 }
 
 .cb-tab-label {
@@ -216,7 +219,8 @@
 
 .cb-msg--user {
   align-self: flex-end;
-  background: #007aff;
+  background: var(--cb-accent);
+  color: #111111;
   border-bottom-right-radius: 4px;
 }
 
@@ -238,8 +242,8 @@
 }
 
 .cb-prompt:hover {
-  border-color: #007aff;
-  color: #007aff;
+  border-color: var(--cb-accent);
+  color: var(--cb-accent);
 }
 
 .cb-composer {
@@ -260,12 +264,12 @@
 }
 
 .cb-composer input:focus {
-  border-color: #007aff;
+  border-color: var(--cb-accent);
 }
 
 .cb-composer button {
-  background: #007aff;
-  color: white;
+  background: var(--cb-accent);
+  color: #111111;
   border: none;
   border-radius: 10px;
   width: 40px;
@@ -278,7 +282,7 @@
 }
 
 .cb-composer button:hover {
-  background: #006ae0;
+  background: var(--cb-accent-hover);
 }
 
 /* PROFILE VIEW */
@@ -313,4 +317,60 @@
   font-size: 0.85rem;
   color: #eeeeee;
   line-height: 1.4;
+}
+
+/* ── Mobile responsive Chatbot ── */
+@media (max-width: 768px) {
+  .cb-fixed-wrapper {
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cb-fixed-wrapper {
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  .cb-panel {
+    width: 300px;
+    max-width: calc(100vw - 2rem);
+  }
+
+  .cb-messages {
+    max-height: 180px;
+  }
+
+  .cb-msg {
+    font-size: 0.78rem;
+    padding: 8px 10px;
+  }
+
+  .cb-launcher {
+    width: 52px;
+    height: 52px;
+  }
+
+  .cb-launcher-inner {
+    border-radius: 12px;
+  }
+
+  .cb-launcher-icon {
+    font-size: 1.5rem;
+  }
+
+  .cb-close-btn {
+    width: 40px;
+    height: 40px;
+    bottom: 6px;
+    right: 6px;
+    font-size: 1.2rem;
+    border-radius: 12px;
+  }
+
+  .cb-tab {
+    padding: 5px 12px;
+    font-size: 0.78rem;
+  }
 }

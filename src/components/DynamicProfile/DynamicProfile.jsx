@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import ResumeDownload from '../ResumeDownload';
 import MagneticText from './MagneticText';
+import TerminalBio from './TerminalBio';
 import './DynamicProfile.css';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -70,16 +71,6 @@ const DynamicProfile = () => {
 
       <p className="eyebrow">My Profile</p>
 
-      {/* Animated text rows */}
-      {ROWS.map(({ text, tag }, i) => (
-        <h2 className="row" key={i} tabIndex={0}>
-          <span className="fill">
-            <MagneticText text={text} />
-            <span className="row-tag">{tag}</span>
-          </span>
-        </h2>
-      ))}
-
       {/* Stats grid */}
       <div className="stats-grid" aria-label="Key stats">
         {STATS.map(({ value, label }) => (
@@ -93,6 +84,22 @@ const DynamicProfile = () => {
       {/* Resume download */}
       <div style={{ display: 'flex', justifyContent: 'center', margin: '40px 0' }}>
         <ResumeDownload />
+      </div>
+
+      <div className="about-columns">
+        <div className="about-rows-col">
+          {ROWS.map(({ text, tag }, i) => (
+            <h2 className="row" key={i} tabIndex={0}>
+              <span className="fill">
+                <MagneticText text={text} />
+                <span className="row-tag">{tag}</span>
+              </span>
+            </h2>
+          ))}
+        </div>
+        <div className="about-terminal-col">
+          <TerminalBio />
+        </div>
       </div>
 
       {/* Bottom spacer */}

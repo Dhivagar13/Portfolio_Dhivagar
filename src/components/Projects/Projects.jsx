@@ -12,23 +12,45 @@ const Projects = () => {
     {
       title: 'Vita5',
       subtitle: 'SOS Application',
+      domain: 'Mobile Safety',
       bgImg: `url(${vita5Image})`,
-      description: 'Mobile safety app // Real-time emergency alerts and location sharing to trusted contacts.',
-      tech: 'Modern Stack'
+      description: 'A mobile safety app designed for immediate emergency response and coordinate sharing.',
+      features: [
+        'Real-time GPS location sharing',
+        'One-tap instant SOS alerts',
+        'Trusted contacts notification system',
+        'Background location tracking during emergency'
+      ],
+      tech: ['React Native', 'Node.js', 'Express', 'MongoDB', 'Socket.io', 'Google Maps API']
     },
     {
       title: 'AgriDetect',
       subtitle: 'Digital Agriculture',
+      domain: 'AgriTech Platform',
       bgImg: `url(${agriDetectImage})`,
-      description: 'Farmer support system // Livestock management, agricultural marketplace, and expert consultation.',
-      tech: 'Modern Stack'
+      description: 'An integrated farmer support platform streamlining agricultural operations and commerce.',
+      features: [
+        'Livestock health & management tracker',
+        'Direct peer-to-peer agriculture marketplace',
+        'Expert consultation and diagnostic module',
+        'Weather integration and crop advisory'
+      ],
+      tech: ['React', 'Spring Boot', 'Java', 'PostgreSQL', 'RESTful APIs', 'Hibernate']
     },
     {
       title: 'Smart Mentis',
-      subtitle: 'EdTech',
+      subtitle: 'AI Career Guidance',
+      domain: 'EdTech / Generative AI',
       bgImg: `url(${smartMentisImage})`,
-      description: 'AI career guidance // Intelligent aptitude assessment with personalized recommendations.',
-      tech: 'React, FastAPI, Firebase'
+      description: 'An AI-driven career assistant that builds customized roadmaps and skill learning paths.',
+      features: [
+        'AI chatbot for personalized career advisory',
+        'Intelligent aptitude assessment engine',
+        'Dynamic YouTube API resource curator',
+        'User progress tracking & skill roadmaps',
+        'Secure Firebase authentication'
+      ],
+      tech: ['React.js', 'FastAPI', 'Python', 'Gemini API', 'YouTube API', 'Firebase']
     }
   ];
 
@@ -41,15 +63,29 @@ const Projects = () => {
             <div className="col" key={index} onTouchStart={(e) => e.currentTarget.classList.toggle('hover')}>
               <div className="container">
                 <div className="front" style={{ backgroundImage: project.bgImg }}>
+                  <div className="front-overlay"></div>
                   <div className="inner">
-                    <p>{project.title}</p>
-                    <span>{project.subtitle}</span>
+                    <span className="project-index">0{index + 1}</span>
+                    <span className="project-badge">{project.domain}</span>
+                    <p className="project-title">{project.title}</p>
+                    <span className="project-subtitle">{project.subtitle}</span>
+                    <div className="hover-hint">Hover to explore details //</div>
                   </div>
                 </div>
                 <div className="back">
                   <div className="inner">
+                    <span className="project-back-domain">{project.domain}</span>
                     <p className="description-text">{project.description}</p>
-                    <span className="tech-stack-text">{project.tech}</span>
+                    <ul className="features-list">
+                      {project.features.map((feat, fidx) => (
+                        <li key={fidx}>{feat}</li>
+                      ))}
+                    </ul>
+                    <div className="tech-badges">
+                      {project.tech.map((t, tidx) => (
+                        <span className="tech-badge" key={tidx}>{t}</span>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>

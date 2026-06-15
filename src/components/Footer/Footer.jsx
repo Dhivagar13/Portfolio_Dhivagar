@@ -64,7 +64,7 @@ const Footer = () => {
             ))}
           </Dock>
 
-          <p className="footer-motto">BUILT_WITH_PURE_DESIRE</p>
+          <p className="footer-motto">BUILT_BY_DHIVAGAR</p>
         </div>
       </div>
     </footer>

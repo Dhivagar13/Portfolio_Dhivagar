@@ -51,3 +51,15 @@
     font-family: inherit;
     pointer-events: none;
 }
+
+@media (max-width: 600px) {
+    #wrap canvas {
+        width: min(90vw, 500px);
+        height: min(90vw, 500px);
+    }
+
+    .kdl-info {
+        font-size: 12px;
+        bottom: 14px;
+    }
+}

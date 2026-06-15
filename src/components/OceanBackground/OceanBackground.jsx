@@ -4,7 +4,7 @@ import './OceanBackground.css';
 const NAMES = ["HOME", "ABOUT", "SKILLS", "PROJECTS", "SHOWCASE"];
 const N = NAMES.length;
 
-const OceanBackground = () => {
+const OceanBackground = ({ lenis: lenisRef }) => {
   const canvasRef = useRef(null);
   const hudPctRef = useRef(null);
   const progFillRef = useRef(null);
@@ -150,8 +150,9 @@ const OceanBackground = () => {
            vec2 p = uv + vec2(-0.8 + fi * -0.15 + mod(uT * 0.05 + fi * 0.2, 2.0) * 1.5, -0.3 + sin(uT * 0.2 + fi) * 0.05 - fi * 0.05);
            b += sdBird(p * 5.0);
        }
-       return clamp(b, 0.0, 1.0);
+        return clamp(b, 0.0, 1.0);
     }
+
 
     void main() {
       vec2 uv = (gl_FragCoord.xy - uR * 0.5) / uR.y;
@@ -169,30 +170,42 @@ const OceanBackground = () => {
       // uSc = scene index (0=Home, 1=About, 2=Skills, 3=Projects, 4=Showcase)
       // uBl = blend within current scene (0..1)
       float scenePos  = uSc + uBl;          // 0.0 (Home start) to 3.99 (end of scene 3)
-      // Night starts at scene 4+ (Showcase) and deepens through to end
-      float night = smoothstep(3.0, 4.0, scenePos);
-      // Storm peaks at the very end
-      float storm = smoothstep(3.6, 4.0, scenePos);
+      // Night completes by mid-Showcase so background ends cleanly
+      float night = smoothstep(3.0, 3.5, scenePos);
+      // Storm peaks by end of Projects section
+      float storm = smoothstep(3.2, 3.6, scenePos);
 
-      vec3 skyTop = sCol(vec3(0.18, 0.06, 0.24), vec3(0.05, 0.24, 0.68), vec3(0.26, 0.06, 0.04), vec3(0.01, 0.01, 0.05), vec3(0.04, 0.05, 0.09));
-      vec3 skyHori = sCol(vec3(0.92, 0.48, 0.18), vec3(0.42, 0.62, 0.90), vec3(0.88, 0.32, 0.04), vec3(0.03, 0.05, 0.14), vec3(0.15, 0.17, 0.23));
-      vec3 sunCol = sCol(vec3(1.0, 0.62, 0.22), vec3(1.0, 0.96, 0.80), vec3(1.0, 0.38, 0.05), vec3(0.70, 0.75, 0.94), vec3(0.26, 0.28, 0.34));
-      vec3 seaDeep = sCol(vec3(0.08, 0.05, 0.12), vec3(0.03, 0.14, 0.34), vec3(0.10, 0.06, 0.04), vec3(0.00, 0.01, 0.03), vec3(0.03, 0.04, 0.07));
-      vec3 seaShlo = sCol(vec3(0.28, 0.17, 0.24), vec3(0.09, 0.38, 0.60), vec3(0.24, 0.13, 0.06), vec3(0.04, 0.06, 0.16), vec3(0.07, 0.10, 0.14));
-      vec3 fogCol = sCol(vec3(0.80, 0.50, 0.30), vec3(0.58, 0.72, 0.90), vec3(0.70, 0.28, 0.05), vec3(0.02, 0.03, 0.08), vec3(0.12, 0.14, 0.18));
-
-      // Sun arc: s goes 0 (Home) → 1 (Projects top)
-      float sunProgress = clamp(s * 0.90, 0.0, 1.0);
+      // Sun arc: s goes 0 (Home) → 1 (Projects top) — full 180° arc
+      float sunProgress = clamp(s, 0.0, 1.0);
       float sunAngle = sunProgress * PI;
-      
+
+      float sunsetFactor = smoothstep(0.70, 0.95, sunProgress);
+
+      vec3 skyTop = sCol(vec3(0.18, 0.06, 0.24), vec3(0.05, 0.24, 0.68), vec3(0.26, 0.06, 0.04), vec3(0.15, 0.03, 0.0), vec3(0.04, 0.05, 0.09));
+      vec3 skyHori = mix(
+        sCol(vec3(0.92, 0.48, 0.18), vec3(0.42, 0.62, 0.90), vec3(0.88, 0.32, 0.04), vec3(0.85, 0.35, 0.05), vec3(0.05, 0.02, 0.01)),
+        vec3(0.90, 0.40, 0.08),
+        sunsetFactor * 0.35
+      );
+      vec3 sunCol = mix(
+        vec3(1.0, 0.96, 0.80),
+        vec3(1.0, 0.40, 0.03),
+        sunsetFactor
+      );
+      vec3 seaDeep = sCol(vec3(0.08, 0.05, 0.12), vec3(0.03, 0.14, 0.34), vec3(0.04, 0.05, 0.10), vec3(0.03, 0.04, 0.08), vec3(0.03, 0.04, 0.07));
+      vec3 seaShlo = sCol(vec3(0.28, 0.17, 0.24), vec3(0.09, 0.38, 0.60), vec3(0.10, 0.12, 0.22), vec3(0.08, 0.09, 0.18), vec3(0.07, 0.10, 0.14));
+      seaDeep = mix(seaDeep, vec3(0.03, 0.04, 0.08), sunsetFactor * 0.85);
+      seaShlo = mix(seaShlo, vec3(0.08, 0.10, 0.18), sunsetFactor * 0.90);
+      vec3 fogCol = sCol(vec3(0.80, 0.50, 0.30), vec3(0.58, 0.72, 0.90), vec3(0.70, 0.28, 0.05), vec3(0.60, 0.25, 0.05), vec3(0.05, 0.02, 0.01));
+
       // Calculate aspect ratio to ensure sun stays within screen bounds on mobile
       float ar = uR.x / uR.y;
-      float sunX = cos(sunAngle) * -(ar * 0.42);
+      float sunX = cos(sunAngle) * -(ar * 0.35);
       
       vec3 sunDir = normalize(vec3(sunX, sin(sunAngle) * 0.38 - 0.08, -1.0));
       vec3 moonDir = normalize(vec3(-ar * 0.1, 0.42, -1.0));
 
-      float waveAmp = sF(0.082, 0.070, 0.100, 0.054, 0.30) + storm * 0.020;
+      float waveAmp = sF(0.082, 0.070, 0.100, 0.054, 0.30) + storm * 0.020 + sunsetFactor * 0.045;
       float fogDen = sF(0.020, 0.010, 0.022, 0.034, 0.046);
       float moonAmt = sF(0.0, 0.0, 0.05, 0.92, 0.06);
 
@@ -221,15 +234,41 @@ const OceanBackground = () => {
 
         vec3 reflSky = mix(skyHori, skyTop, pow(clamp(reflect(rd, n).y, 0.0, 1.0), 0.42));
         reflSky += sunCol * pow(max(dot(reflect(rd, n), sunDir), 0.0), 120.0) * 2.0 * sunGlow;
+        reflSky = mix(reflSky, vec3(0.95, 0.62, 0.40), sunsetFactor * 0.25);
 
         if (moonAmt > 0.04) reflSky += vec3(0.72, 0.80, 0.95) * pow(max(dot(reflect(rd,n), moonDir),0.0), 120.0) * 0.78 * moonAmt;
 
         vec3 waterC = mix(seaDeep, seaShlo, exp(-t * 0.40) * 0.5);
-        waterC *= mix(vec3(1.0), vec3(0.85, 0.92, 1.0), clamp(t * 0.25, 0.0, 1.0));
-        col = mix(waterC, reflSky, 0.15 + fres * 0.34);
+        waterC = mix(waterC, vec3(0.08, 0.06, 0.12), sunsetFactor * 0.50);
+        waterC *= mix(vec3(1.0), mix(vec3(0.92, 0.88, 0.82), vec3(1.05, 0.85, 0.65), sunsetFactor), clamp(t * 0.25, 0.0, 1.0));
+
+        float waveDefinition = smoothstep(0.015, 0.18, length(n.xz));
+        float waveFine = smoothstep(0.42, 0.92, noise(wp * 18.0 + vec2(uT * 0.20, -uT * 0.10)));
+        float waveLineA = sin(dot(wp, normalize(vec2(1.0, 0.28))) * 2.9 + uT * 0.72);
+        float waveLineB = sin(dot(wp, normalize(vec2(-0.48, 0.88))) * 5.2 - uT * 1.05);
+        float waveLineC = sin(wp.x * 8.4 + wp.y * 1.7 - uT * 1.35);
+        float waveLines = waveLineA * 0.54 + waveLineB * 0.30 + waveLineC * 0.16;
+        float crests = smoothstep(0.42, 0.86, waveLines) * (0.45 + waveDefinition * 0.75);
+        float troughs = smoothstep(0.32, 0.86, -waveLines) * (0.35 + waveDefinition * 0.55);
+        vec3 ridgeCol = mix(vec3(0.95, 0.78, 0.56), vec3(0.95, 0.70, 0.48), sunsetFactor);
+        vec3 troughCol = mix(vec3(0.04, 0.09, 0.13), vec3(0.04, 0.02, 0.05), sunsetFactor);
+        
+        // Directional wave highlights - lit when facing the sun, dark when shadowed
+        float sunFacing = max(0.0, dot(n, normalize(vec3(sunDir.x, 0.1, sunDir.z))));
+        float litHighlight = (0.3 + 0.7 * sunFacing);
+
+        waterC = mix(waterC * 0.85, waterC, 1.0 - waveDefinition * 0.15);
+        waterC = mix(waterC, troughCol, troughs * (0.15 + sunsetFactor * 0.05));
+        waterC += ridgeCol * waveDefinition * (0.025 + sunsetFactor * 0.04) * litHighlight;
+        waterC += ridgeCol * waveFine * waveDefinition * (0.012 + sunsetFactor * 0.02) * litHighlight;
+        waterC += ridgeCol * crests * (0.035 + sunsetFactor * 0.05) * litHighlight;
+
+        float reflAmount = (0.15 + fres * 0.34) * mix(1.0, 0.64, sunsetFactor);
+        col = mix(waterC, reflSky, reflAmount);
         
         col += sunCol * pow(max(dot(reflect(-sunDir, n), -rd), 0.0), 200.0) * 1.10 * sunAbove;
         col = mix(col, fogCol, 1.0 - exp(-t * fogDen * 1.65));
+        col = mix(col, vec3(0.90, 0.45, 0.25), sunsetFactor * 0.08);
       } else {
         col = mix(skyHori, skyTop, pow(clamp(rd.y, 0.0, 1.0), 0.38));
       }
@@ -334,31 +373,37 @@ const OceanBackground = () => {
       const projectsEl = document.getElementById('projects');
       const maxScrollFull = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
 
+      // Use Lenis if available, fall back to window scrollY
+      const getScrollY = () => {
+        if (lenisRef && lenisRef.current) {
+          return lenisRef.current.scroll || window.scrollY;
+        }
+        return window.scrollY;
+      };
+
+      const scrollY = getScrollY();
+
       // Sun arc target: 0 at top (Home), 1 when Projects hits the top of the viewport
       let scrollTarget;
       if (projectsEl) {
         const projectsOffset = projectsEl.offsetTop;
         if (projectsOffset > 0) {
-          scrollTarget = Math.min(1, Math.max(0, window.scrollY / projectsOffset));
+          scrollTarget = Math.min(1, Math.max(0, scrollY / projectsOffset));
         } else {
-          scrollTarget = Math.min(1, Math.max(0, window.scrollY / maxScrollFull));
+          scrollTarget = Math.min(1, Math.max(0, scrollY / maxScrollFull));
         }
       } else {
-        scrollTarget = Math.min(1, Math.max(0, window.scrollY / maxScrollFull));
+        scrollTarget = Math.min(1, Math.max(0, scrollY / maxScrollFull));
       }
 
       // Full-page target: 0 at top, 1 at absolute bottom (for scene/night)
-      const fullTarget = Math.min(1, Math.max(0, window.scrollY / maxScrollFull));
+      const fullTarget = Math.min(1, Math.max(0, scrollY / maxScrollFull));
 
-      // Direction-aware lerp for sun arc
-      const isReversing = scrollTarget < smoothScroll;
-      const lerpFactor  = isReversing ? 0.080 : 0.040;
-      smoothScroll      += (scrollTarget - smoothScroll) * lerpFactor;
+      // Smooth lerp for sun arc - no direction bias for smoother movement
+      smoothScroll += (scrollTarget - smoothScroll) * 0.06;
 
-      // Direction-aware lerp for full-page (scene index)
-      const isReversingFull = fullTarget < smoothScrollFull;
-      const lerpFull        = isReversingFull ? 0.080 : 0.040;
-      smoothScrollFull      += (fullTarget - smoothScrollFull) * lerpFull;
+      // Smooth lerp for full-page (scene index)
+      smoothScrollFull += (fullTarget - smoothScrollFull) * 0.06;
 
       // Scene index from full-page scroll
       const raw = smoothScrollFull * (N - 1);
