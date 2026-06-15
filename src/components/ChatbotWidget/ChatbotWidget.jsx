@@ -118,18 +118,26 @@ const buildProjectSummary = (sectionText) => {
 };
 
 const identitySection = getSection(bioText, 'IDENTITY');
+const summarySection = getSection(bioText, 'PROFESSIONAL SUMMARY');
 const skillsSection =
   getSection(bioText, 'TECHNICAL SKILLS') || getSection(bioText, 'CORE SKILLS');
 const projectsSection = getSection(bioText, 'PROJECTS');
 const educationSection = getSection(bioText, 'EDUCATION');
 const interestsSection = getSection(bioText, 'INTERESTS & CAREER GOALS');
 const experienceSection = getSection(bioText, 'PROFESSIONAL EXPERIENCE');
+const certificationsSection = getSection(bioText, 'CERTIFICATIONS & ACHIEVEMENTS');
+const leadershipSection = getSection(bioText, 'LEADERSHIP & COMMUNITY');
+const softSkillsSection = getSection(bioText, 'SOFT SKILLS');
 
+const summaryText = summarySection ? compressSection(summarySection) : '';
 const skillsSummary = skillsSection ? compressSection(skillsSection) : '';
 const projectsSummary = buildProjectSummary(projectsSection);
 const educationSummary = educationSection ? compressSection(educationSection) : '';
 const interestsSummary = interestsSection ? compressSection(interestsSection) : '';
 const experienceSummary = buildExperienceSummary(experienceSection);
+const certificationsSummary = certificationsSection ? compressSection(certificationsSection) : '';
+const leadershipSummary = leadershipSection ? compressSection(leadershipSection) : '';
+const softSkillsSummary = softSkillsSection ? compressSection(softSkillsSection) : '';
 
 const contactSummary = (() => {
   const email = getFieldValue(identitySection, 'Email');
@@ -146,28 +154,114 @@ const contactSummary = (() => {
 
 function getAssistantReply(message) {
   const normalized = message.toLowerCase();
-  if (/(skill|stack|technology|tech|expertise)/.test(normalized)) {
-    return skillsSummary ? `From the bio: ${skillsSummary}` : "I don't have that information.";
-  }
-  if (/(project|career chatbot|chatbot)/.test(normalized)) {
-    return projectsSummary ? `From the bio: ${projectsSummary}` : "I don't have that information.";
-  }
-  if (/(work|experience|intern|company|mua|skillsync)/.test(normalized)) {
-    if (experienceSummary) {
-      return `From the bio: ${experienceSummary}`;
+  const short = (text, fallback = "I don't have that information.") => {
+    if (!text) return fallback;
+    const sentences = text.match(/[^.!?]+[.!?]?/g) || [text];
+    return sentences.slice(0, 2).join(' ').trim();
+  };
+
+  const categories = [
+    {
+      id: 'greeting',
+      keywords: ['hello', 'hi', 'hey', 'greetings', 'welcome', 'howdy', 'yo'],
+      reply: "Hi, I'm Dhivagar. Ask me about my skills, projects, experience, or education."
+    },
+    {
+      id: 'help',
+      keywords: ['help', 'commands', 'options', 'what can you do', 'how to use', 'what should i ask', 'guide me'],
+      reply: 'You can ask about my skills, projects, experience, education, achievements, contact, or AI work.'
+    },
+    {
+      id: 'thanks',
+      keywords: ['thanks', 'thank you', 'thankyou', 'ok', 'okay', 'cool', 'nice', 'great'],
+      reply: 'You are welcome. Ask me anything else about my work.'
+    },
+    {
+      id: 'identity',
+      keywords: ['who is dhivagar', 'who are you', 'your name', 'tell me about yourself', 'tell me about you', 'who is he', 'who is this', 'dhivagar'],
+      reply: "I'm Dhivagar B, a Full Stack Developer and AI Developer from Tamil Nadu. I build web apps, APIs, and AI-powered systems."
+    },
+    {
+      id: 'skills',
+      keywords: ['skill', 'stack', 'technology', 'tech', 'expertise', 'languages', 'frameworks', 'database', 'databases', 'coding', 'programming'],
+      reply: 'Skills: Java, JavaScript, Python, React.js, FastAPI, Spring Boot, PostgreSQL, Firebase, Docker, and AI integration.'
+    },
+    {
+      id: 'projects',
+      keywords: ['project', 'projects', 'career chatbot', 'chatbot', 'built', 'developed', 'applications', 'systems'],
+      reply: projectsSummary ? short(projectsSummary) : null
+    },
+    {
+      id: 'experience',
+      keywords: ['experience', 'work', 'intern', 'internship', 'company', 'mua', 'skillsync', 'job', 'profession', 'employed', 'history'],
+      reply: experienceSummary ? short(experienceSummary) : null
+    },
+    {
+      id: 'education',
+      keywords: ['education', 'college', 'study', 'degree', 'school', 'mailam', 'university', 'cgpa', 'academics', 'qualification'],
+      reply: educationSummary ? short(educationSummary) : null
+    },
+    {
+      id: 'interests',
+      keywords: ['interest', 'interests', 'goal', 'goals', 'passion', 'aim', 'future', 'career goal', 'career goals'],
+      reply: 'Interests: Generative AI, RAG chatbots, full-stack system design, and intelligent applications.'
+    },
+    {
+      id: 'contact',
+      keywords: ['contact', 'email', 'phone', 'linkedin', 'portfolio', 'reach out', 'call me', 'mobile', 'address'],
+      reply: contactSummary ? `Contact: ${contactSummary}` : null
+    },
+    {
+      id: 'certifications',
+      keywords: ['certification', 'certifications', 'achievement', 'achievements', 'prize', 'award', 'nptel', 'gold medal', 'paper presentation'],
+      reply: certificationsSummary ? short(certificationsSummary) : null
+    },
+    {
+      id: 'leadership',
+      keywords: ['leadership', 'community', 'event', 'events', 'coordinator', 'intelinfo', 'manage', 'coordinate'],
+      reply: leadershipSummary ? short(leadershipSummary) : null
+    },
+    {
+      id: 'soft_skills',
+      keywords: ['soft skill', 'soft skills', 'problem solving', 'communication', 'collaboration', 'adaptability'],
+      reply: softSkillsSummary ? `Soft skills: ${softSkillsSummary}` : null
+    },
+    {
+      id: 'ai',
+      keywords: ['ai', 'ai experience', 'generative ai', 'llm', 'rag', 'gemini', 'openrouter', 'vector search', 'embeddings', 'chatbot development'],
+      reply: 'AI work: Gemini, OpenRouter, RAG architecture, embeddings, vector search, and chatbot systems.'
+    },
+    {
+      id: 'summary',
+      keywords: ['summary', 'about yourself', 'overview', 'background', 'profile'],
+      reply: summaryText ? short(summaryText) : "I'm Dhivagar B, a Full Stack Developer and AI Developer."
     }
-    return "I don't have that information.";
+  ];
+
+  let bestCategory = null;
+  let maxScore = 0;
+
+  for (const category of categories) {
+    if (!category.reply) continue;
+    let score = 0;
+    for (const keyword of category.keywords) {
+      const escaped = escapeRegExp(keyword);
+      const pattern = new RegExp('\\b' + escaped + 's?\\b', 'i');
+      if (pattern.test(normalized)) {
+        score += keyword.includes(' ') ? 3 : 1;
+      }
+    }
+    if (score > maxScore) {
+      maxScore = score;
+      bestCategory = category;
+    }
   }
-  if (/(education|college|study|degree|school)/.test(normalized)) {
-    return educationSummary ? `From the bio: ${educationSummary}` : "I don't have that information.";
+
+  if (bestCategory && maxScore > 0) {
+    return bestCategory.reply;
   }
-  if (/(interest|goal|passion|aim|future)/.test(normalized)) {
-    return interestsSummary ? `From the bio: ${interestsSummary}` : "I don't have that information.";
-  }
-  if (/(contact|email|phone|linkedin|portfolio)/.test(normalized)) {
-    return contactSummary ? `From the bio: ${contactSummary}` : "I don't have that information.";
-  }
-  return "I don't have that information.";
+
+  return "I don't have that information, but feel free to ask about my skills, projects, experience, or education!";
 }
 
 async function getBackendReply(message) {
